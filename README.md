@@ -7,7 +7,7 @@ Rake tasks
 ----------
 * version - show the current project version (./VERSION)
 * manifest - show the files tracked by the gem (./MANIFEST.txt)
-* build - build a .gem file
+* build - build a .gem file inside pkg/
 * bump_build - increment the 4th version number (1.2.3.4 -> 1.2.3.5)
 * bump_patch - increment the 3rd version number (1.2.3.4 -> 1.2.4.0)
 * bump_minor - increment the 2nd version number (1.2.3.4 -> 1.3.0.0)
