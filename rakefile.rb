@@ -123,6 +123,7 @@ task :gitpush do
   # may prompt
   sh "git push origin"
   # this kills the automation
+  # use key-based auth?
   # consider a timeout?
 end
 
