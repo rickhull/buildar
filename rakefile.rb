@@ -10,6 +10,8 @@ PROJECT_ROOT = File.dirname(__FILE__)
 PROJECT_NAME = File.split(PROJECT_ROOT).last
 VERSION_FILE = File.join(PROJECT_ROOT, 'VERSION')
 MANIFEST_FILE = File.join(PROJECT_ROOT, 'MANIFEST.txt')
+USE_GIT = true
+GIT_COMMIT_VERSION = true   # commit version bump automatically
 
 def version
   File.read(VERSION_FILE).chomp
@@ -20,9 +22,11 @@ task :version do
 end
 
 task :tag => [:test] do
-  tagname = "v#{version}"
-  sh "git tag -a #{tagname} -m 'auto-tagged #{tagname} by Rake'"
-  sh "git push origin --tags"
+  if USE_GIT
+    tagname = "v#{version}"
+    sh "git tag -a #{tagname} -m 'auto-tagged #{tagname} by Rake'"
+    sh "git push origin --tags"
+  end
 end
 
 def manifest
@@ -90,8 +94,10 @@ end
     new_version = bump(v, old_version)
     puts "bumping #{old_version}  to #{new_version}"
     write_version new_version
-    sh "git add VERSION"
-    sh "git commit -m 'rake bump_#{v}'"
+    if USE_GIT and GIT_COMMIT_VERSION
+      sh "git add VERSION"
+      sh "git commit -m 'rake bump_#{v}'"
+    end
   end
 }
 task :bump => [:bump_patch]
@@ -121,7 +127,7 @@ end
 
 task :gitpush do
   # may prompt
-  sh "git push origin"
+  sh "git push origin" if USE_GIT
   # this kills the automation
   # use key-based auth?
   # consider a timeout?
