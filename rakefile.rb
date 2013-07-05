@@ -13,6 +13,12 @@ task :version do
   puts "#{PROJECT_NAME} #{version}"
 end
 
+task :tag do
+  tagname = "v#{version}"
+  sh "git tag -a #{tagname} -m 'auto-tagged #{tagname} by Rake'"
+  sh "git push origin --tags"
+end
+
 def manifest
   File.readlines(MANIFEST_FILE).map { |line| line.chomp }
 end
@@ -21,7 +27,7 @@ task :manifest do
   puts manifest.join("\n")
 end
 
-task :build do
+task :build => [:bump_build] do
   spec = Gem::Specification.new do |s|
     # Static assignments
     s.name        = PROJECT_NAME
@@ -84,17 +90,6 @@ end
 }
 task :bump => [:bump_patch]
 
-task :tag do
-  tagname = "v#{version}"
-  sh "git tag -a #{tagname} -m 'auto-tagged #{tagname} by Rake'"
-  sh "git push origin --tags"
-end
-
-task :release => [:bump_build, :tag, :publish]
-task :release_patch => [:bump_patch, :tag, :publish]
-task :release_minor => [:bump_minor, :tag, :publish]
-task :release_major => [:bump_major, :tag, :publish]
-
 task :verify_publish_credentials do
   creds = '~/.gem/credentials'
   fp = File.expand_path(creds)
@@ -102,7 +97,7 @@ task :verify_publish_credentials do
   raise "can't read #{creds}" unless File.readable?(fp)
 end
 
-task :publish => [:verify_publish_credentials, :build] do
+task :publish => [:verify_publish_credentials] do
   fragment = "-#{version}.gem"
   pkg_dir = File.join(PROJECT_ROOT, 'pkg')
   Dir.chdir(pkg_dir) {
@@ -117,3 +112,8 @@ task :publish => [:verify_publish_credentials, :build] do
     end
   }
 end
+
+task :release => [:build, :tag, :publish]
+task :release_patch => [:bump_patch, :release]
+task :release_minor => [:bump_minor, :release]
+task :release_major => [:bump_major, :release]
