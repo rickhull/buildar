@@ -18,6 +18,7 @@ Rake tasks
 * release_patch - bump_patch, release
 * release_minor - bump_minor, release
 * release_major - bump_major, release
+* test - from 'rake/testtask'
 
 Philosophy
 ----------
