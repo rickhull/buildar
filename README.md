@@ -46,7 +46,7 @@ A directory like buildar-0.0.4.1 will be created in your CWD with three files:
 
 Copy the rakefile.rb contained within to the root directory of the project you want to use it in.  Consider renaming any existing project Rakefile beforehand.  Consider copying VERSION and MANIFEST.txt as well, though note that these files will be specific to buildar itself.
 
-Bbuildar creates your gemspec dynamically, and it relies on being able to find and read VERSION and MANIFEST.txt.  If you have different names for these files in your project, you can easily edit the top of the rakefile.rb.
+Buildar creates your gemspec dynamically, and it relies on being able to find and read VERSION and MANIFEST.txt.  If you have different names for these files in your project, you can easily edit the top of the rakefile.rb.
 
 Buildar will keep your VERSION file updated, but it's up to you to make sure MANIFEST.txt is up to date.  There is intentionally no support for globs.  Just list all the files you want included in the resulting gem.
 
