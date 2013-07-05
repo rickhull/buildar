@@ -113,7 +113,14 @@ task :publish => [:verify_publish_credentials] do
   }
 end
 
-task :release => [:build, :tag, :publish]
+task :gitpush do
+  # may prompt
+  sh "git push origin"
+  # this kills the automation
+  # consider a timeout?
+end
+
+task :release => [:build, :tag, :publish, :gitpush]
 task :release_patch => [:bump_patch, :release]
 task :release_minor => [:bump_minor, :release]
 task :release_major => [:bump_major, :release]
