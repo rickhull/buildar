@@ -22,7 +22,7 @@ Rake tasks
 Philosophy
 ----------
 * Track the project version in one place: ./VERSION
-* The version only matters in the context of a release.  Version numbers are vastly outclassed by e.g. git SHAs for development purposes.
+* The version only matters in the context of a release.  For development purposes, git SHAs vastly outclass version numbers.
 * "The right version number" for the next release is a function of the current release version and the magnitude (or breakiness) of the change
 * http://semver.org/
 * Automate everything
