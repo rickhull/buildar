@@ -1,3 +1,4 @@
-VERSION
-rakefile.rb
 MANIFEST.txt
+VERSION
+README.md
+rakefile.rb
