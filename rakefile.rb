@@ -24,7 +24,7 @@ end
 task :build do
   spec = Gem::Specification.new do |s|
     # Static assignments
-    s.name        = "FIX"
+    s.name        = PROJECT_NAME
     s.summary     = "FIX"
     s.description = "FIX"
     s.authors     = ["FIX"]
