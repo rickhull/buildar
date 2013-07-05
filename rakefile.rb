@@ -9,12 +9,12 @@ def version
   File.read(VERSION_FILE).chomp
 end
 
-def manifest
-  File.readlines(MANIFEST_FILE).map { |line| line.chomp }
-end
-
 task :version do
   puts "#{PROJECT_NAME} #{version}"
+end
+
+def manifest
+  File.readlines(MANIFEST_FILE).map { |line| line.chomp }
 end
 
 task :manifest do
