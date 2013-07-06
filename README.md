@@ -29,11 +29,13 @@ Philosophy
 * Automate everything
 * This does not absolve you from attentending to changelogs, etc.
 
-Using Buildar
--------------
+Install
+-------
     $ gem install buildar # sudo as necessary
 
-Add to your Rakefile:
+Usage
+-----
+Edit your Rakefile.  Add to the top:
 
     require 'buildar/tasks'
 
@@ -41,15 +43,9 @@ Add to your Rakefile:
       # ...
     }
 
-Make sure you have a :test task
-
-    require 'rake/testtask'
-
-    # runs your test files
-    #
-    Rake::TestTask.new :test do |t|
-      t.pattern = 'test/*.rb' # FIX for your layout
-    end
+    # make sure you have a task named :test, even if it's empty
+    #task :test do
+    #end
 
 Dogfood
 -------
