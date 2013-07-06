@@ -5,20 +5,21 @@ packaging, releasing, and publishing ruby gems, with optional git integration.
 
 Rake tasks
 ----------
-* `version` show the current project version (./VERSION)
-* `manifest` show the files tracked by the gem (./MANIFEST.txt)
-* `tag` git tag according to current version, pushed to origin
-* `bump_build` increment the 4th version number (1.2.3.4 -> 1.2.3.5)
-* `bump_patch` increment the 3rd version number (1.2.3.4 -> 1.2.4.0)
-* `bump_minor` increment the 2nd version number (1.2.3.4 -> 1.3.0.0)
-* `bump_major` increment the 1st version number (1.2.3.4 -> 2.0.0.0)
-* `build` bump_build, build a .gem file inside pkg/
-* `publish` gem push
-* `release` build, tag, publish
+* `release` - capture message, build, tag, publish
+* `build` - test, bump_build; build a .gem file inside pkg/
+* `test` - runs your tests using rake/testtask
+* `publish` - verify publish credentials; gem push
+* `tag` - git tag according to current version, pushed to origin
+* `message` - capture a message from ENV['message'] or prompt STDIN
+* `manifest` - show the files tracked by the gem (./MANIFEST.txt)
+* `version` - show the current project version (./VERSION)
+* `bump_build` - increment the 4th version number (1.2.3.4 -> 1.2.3.5)
+* `bump_patch` - increment the 3rd version number (1.2.3.4 -> 1.2.4.0)
+* `bump_minor` - increment the 2nd version number (1.2.3.4 -> 1.3.0.0)
+* `bump_major` - increment the 1st version number (1.2.3.4 -> 2.0.0.0)
 * `release_patch` bump_patch, release
 * `release_minor` bump_minor, release
 * `release_major` bump_major, release
-* `test` from 'rake/testtask'
 
 Philosophy
 ----------

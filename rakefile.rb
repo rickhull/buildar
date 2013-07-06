@@ -1,11 +1,6 @@
 require 'rubygems/package_task'
 require 'rake/testtask'
 
-Rake::TestTask.new :test do |t|
-  # FIX for your layout
-  t.pattern = 'test/*.rb'
-end
-
 module Buildar
   ##############################################
   # Project-specific settings.  Edit as needed.
@@ -78,6 +73,19 @@ module Buildar
       end
     }.join('.')
   end
+end
+
+
+#######
+# Tasks
+#
+#
+
+
+# task :test runs your test files
+#
+Rake::TestTask.new :test do |t|
+  t.pattern = 'test/*.rb' # FIX for your layout
 end
 
 task :version do
