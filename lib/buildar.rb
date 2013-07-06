@@ -6,10 +6,6 @@
 # And it can't be set to nil, for example.
 #
 class Buildar
-  attr_accessor :root, :version_filename, :manifest_filename,
-                :use_git, :publish
-  attr_reader :name
-
   # Call this from the rakefile, like:
   # Buildar.conf(__FILE__) do |b|
   #   b.name = 'foo'
@@ -56,10 +52,15 @@ class Buildar
     }.join('.')
   end
 
+  attr_accessor :root, :version_filename, :manifest_filename,
+                :use_git, :publish, :use_manifest_file
+  attr_reader :name
+
   def initialize(root = nil, name = nil)
     @root = root ? File.expand_path(root) : Dir.pwd
     @name = name || File.split(@root).last
     @version_filename = 'VERSION'
+    @use_manifest_file = true
     @manifest_filename = 'MANIFEST.txt'
     @use_git = true
     @publish = { rubygems: true }
@@ -71,7 +72,6 @@ class Buildar
   def gemspec
     @gemspec ||= Gem::Specification.new do |s|
       # Static assignments
-      s.name        = @name
       s.summary     = "FIX"
       s.description = "FIX"
       s.authors     = ["FIX"]
@@ -81,43 +81,34 @@ class Buildar
       # s.has_rdoc    = true
       # s.test_files  = ['FIX']
 
-      # Dynamic assignments
-      s.files       = self.manifest
-      s.version     = self.version
-      # s.date        = Time.now.strftime("%Y-%m-%d")
-
-      # s.add_runtime_dependency  "rest-client", ["~> 1"]
-      # s.add_runtime_dependency         "json", ["~> 1"]
       s.add_development_dependency "minitest", [">= 0"]
       s.add_development_dependency     "rake", [">= 0"]
       s.add_development_dependency  "buildar", ["> 0.4"]
     end
-  end
-
-  # Update gemspec as well if it's already been created
-  #
-  def name=(name)
-    @name = name
-    @gemspec.name = name if @gemspec
+    # Make sure things tracked elsewhere stay updated
+    @gemspec.name = @name
+    @gemspec.files = self.manifest if @use_manifest_file
+    @gemspec.version = self.version
+    @gemspec
   end
 
   def version_file
     File.join(@root, @version_filename)
   end
 
-  def manifest_file
-    File.join(@root, @manifest_filename)
-  end
-
   def version
     File.read(self.version_file).chomp
   end
 
-  def manifest
-    File.readlines(self.manifest_file).map { |line| line.chomp }
-  end
-
   def write_version new_version
     File.open(self.version_file, 'w') { |f| f.write(new_version) }
+  end
+
+  def manifest_file
+    File.join(@root, @manifest_filename)
+  end
+
+  def manifest
+    File.readlines(self.manifest_file).map { |line| line.chomp }
   end
 end
