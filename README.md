@@ -107,7 +107,7 @@ Git integration
 ---------------
 Set `USE_GIT = false` if you're not interested in any of the following:
 * `tag` is a `release` dependency.  It depends on `test`
-* `bump` and friends_* will commit VERSION changes if USE_GIT and GIT_COMMIT_VERSION
+* `bump` and friends will commit VERSION changes `if USE_GIT and GIT_COMMIT_VERSION`
 * `gitpush` simply does `git push origin`
 
 Testing it out
