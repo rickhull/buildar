@@ -68,24 +68,24 @@ There are only two sections you need to consider: the topmost section of the Bui
 
       def self.gemspec
         Gem::Specification.new do |s|
-	  # Static assignments
-	  s.name        = PROJECT_NAME
-	  s.summary     = "FIX"
-	  s.description = "FIX"
-	  s.authors     = ["FIX"]
-	  s.email       = "FIX@FIX.COM"
-	  s.homepage    = "http://FIX.COM/"
-	  s.licenses    = ['FIX']
+          # Static assignments
+          s.name        = PROJECT_NAME
+          s.summary     = "FIX"
+          s.description = "FIX"
+          s.authors     = ["FIX"]
+          s.email       = "FIX@FIX.COM"
+          s.homepage    = "http://FIX.COM/"
+          s.licenses    = ['FIX']
 
-	  # Dynamic assignments
-	  s.files       = manifest
-	  s.version     = version
-	  s.date        = Time.now.strftime("%Y-%m-%d")
+          # Dynamic assignments
+          s.files       = manifest
+          s.version     = version
+          s.date        = Time.now.strftime("%Y-%m-%d")
 
-	  # s.add_runtime_dependency  "rest-client", ["~> 1"]
-	  # s.add_runtime_dependency         "json", ["~> 1"]
-	  s.add_development_dependency "minitest", [">= 0"]
-	  s.add_development_dependency     "rake", [">= 0"]
+          # s.add_runtime_dependency  "rest-client", ["~> 1"]
+          # s.add_runtime_dependency         "json", ["~> 1"]
+          s.add_development_dependency "minitest", [">= 0"]
+          s.add_development_dependency     "rake", [">= 0"]
         end
       end
       #
