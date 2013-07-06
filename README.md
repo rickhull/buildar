@@ -1,7 +1,7 @@
 Buildar
 =======
 Buildar is a set of Rakefile methods and tasks to help automate versioning,
-packaging, releasing, and publishing ruby gems.
+packaging, releasing, and publishing ruby gems, with optional git integration.
 
 Rake tasks
 ----------
@@ -29,22 +29,27 @@ Philosophy
 * Automate everything
 * This does not absolve you from attentending to changelogs, etc.
 
+Git integration
+---------------
+Set USE_GIT = false if you're not interested in any of the following:
+* [task :tag](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L24) is a [task :release](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L136) dependency.  It depends on [task :test](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L4).
+* The [:bump_* tasks](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L91) will commit VERSION changes if USE_GIT and GIT_COMMIT_VERSION
+* [task :gitpush](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L128) simply does `git push origin`
+
 Using Buildar
 -------------
-Install it, using sudo as necessary:
+Just integrate Buildar's [rakefile.rb](https://github.com/rickhull/buildar/raw/master/rakefile.rb) with your project's metadata and existing Rakefile.  For the Rakefile, hopefully nothing conflicts, and you can just paste Buildar's rakefile.rb at the top.
 
-    gem install buildar
+Alternative methods of getting a hold of rakefile.rb:
 
-Unpack the gem (a new directory will be created)
-
+    gem install buildar  # sudo as nec
     gem unpack buildar
+    # a new directory is created, containing rakefile.rb
 
-A directory like buildar-0.0.4.1 will be created in your CWD with three files:
-* rakefile.rb
-* VERSION
-* MANIFEST.txt
+    ## OR ##
 
-Copy the rakefile.rb contained within to the root directory of the project you want to use it in.  Consider renaming any existing project Rakefile beforehand.  Consider copying VERSION and MANIFEST.txt as well, though note that these files will be specific to buildar itself.
+    git clone https://github.com/rickhull/buildar.git
+    # a new directory is created, containing rakefile.rb
 
 Buildar creates your gemspec dynamically, and it relies on being able to find and read VERSION and MANIFEST.txt.  If you have different names for these files in your project, you can easily edit the top of the rakefile.rb.
 
