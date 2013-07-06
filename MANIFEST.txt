@@ -1,3 +1,5 @@
 MANIFEST.txt
 VERSION
 rakefile.rb
+lib/buildar.rb
+lib/buildar/tasks.rb
