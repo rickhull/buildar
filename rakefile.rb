@@ -27,11 +27,13 @@ module Buildar
       s.email       = "FIX@FIX.COM"
       s.homepage    = "http://FIX.COM/"
       s.licenses    = ['FIX']
+      s.has_rdoc    = true
+      # s.test_files  = ['FIX']
 
       # Dynamic assignments
       s.files       = manifest
       s.version     = version
-      s.date        = Time.now.strftime("%Y-%m-%d")
+      # s.date        = Time.now.strftime("%Y-%m-%d")
 
       # s.add_runtime_dependency  "rest-client", ["~> 1"]
       # s.add_runtime_dependency         "json", ["~> 1"]
