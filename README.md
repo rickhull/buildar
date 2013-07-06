@@ -1,6 +1,6 @@
 Buildar
 =======
-Buildar is a ruby module and a set of tasks to help automate versioning, packaging, releasing, and publishing ruby gems, with optional git integration.
+Buildar lives inside your Rakefile, consisting of a ruby module and a set of tasks to help automate versioning, packaging, releasing, and publishing ruby gems, with optional git integration.
 
 Rake tasks
 ----------
@@ -8,7 +8,7 @@ Rake tasks
 * `build` - `test` `bump_build` build a .gem file inside pkg/
 * `test` - runs your tests using rake/testtask
 * `publish` - `verify publish credentials` gem push
-* `tag` - git tag according to current version, pushed to origin
+* `tag` - `test` git tag according to current version, pushed to origin
 * `message` - capture a message from ENV['message'] or prompt STDIN
 * `manifest` - show the files tracked by the gem (./MANIFEST.txt)
 * `version` - show the current project version (./VERSION)
