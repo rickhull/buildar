@@ -5,10 +5,10 @@ packaging, releasing, and publishing ruby gems, with optional git integration.
 
 Rake tasks
 ----------
-* `release` - capture message, build, tag, publish
-* `build` - test, bump_build; build a .gem file inside pkg/
+* `release` - `message` `build` `tag` `publish`
+* `build` - `test` `bump_build` build a .gem file inside pkg/
 * `test` - runs your tests using rake/testtask
-* `publish` - verify publish credentials; gem push
+* `publish` - `verify publish credentials` gem push
 * `tag` - git tag according to current version, pushed to origin
 * `message` - capture a message from ENV['message'] or prompt STDIN
 * `manifest` - show the files tracked by the gem (./MANIFEST.txt)
@@ -17,9 +17,9 @@ Rake tasks
 * `bump_patch` - increment the 3rd version number (1.2.3.4 -> 1.2.4.0)
 * `bump_minor` - increment the 2nd version number (1.2.3.4 -> 1.3.0.0)
 * `bump_major` - increment the 1st version number (1.2.3.4 -> 2.0.0.0)
-* `release_patch` bump_patch, release
-* `release_minor` bump_minor, release
-* `release_major` bump_major, release
+* `release_patch` - `bump_patch` `release`
+* `release_minor` - `bump_minor` `release`
+* `release_major` - `bump_major` `release`
 
 Philosophy
 ----------
