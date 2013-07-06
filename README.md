@@ -63,11 +63,11 @@ There are only two sections you need to consider: the topmost section of the Bui
       USE_GIT = true
       GIT_COMMIT_VERSION = true   # commit version bump automatically
       PUBLISH = {
-	rubygems: true,  # publish .gem to http://rubygems.org/
+        rubygems: true,  # publish .gem to http://rubygems.org/
       }
 
       def self.gemspec
-	Gem::Specification.new do |s|
+        Gem::Specification.new do |s|
 	  # Static assignments
 	  s.name        = PROJECT_NAME
 	  s.summary     = "FIX"
@@ -86,7 +86,7 @@ There are only two sections you need to consider: the topmost section of the Bui
 	  # s.add_runtime_dependency         "json", ["~> 1"]
 	  s.add_development_dependency "minitest", [">= 0"]
 	  s.add_development_dependency     "rake", [">= 0"]
-	end
+        end
       end
       #
       #
