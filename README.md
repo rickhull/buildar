@@ -1,7 +1,6 @@
 Buildar
 =======
-Buildar is a set of Rakefile methods and tasks to help automate versioning,
-packaging, releasing, and publishing ruby gems, with optional git integration.
+Buildar is a ruby module and a set of tasks to help automate versioning, packaging, releasing, and publishing ruby gems, with optional git integration.
 
 Rake tasks
 ----------
@@ -32,7 +31,7 @@ Philosophy
 
 Using Buildar
 -------------
-Just integrate Buildar's [rakefile.rb](https://github.com/rickhull/buildar/raw/master/rakefile.rb) with your project's metadata and existing Rakefile.  For the Rakefile, hopefully nothing conflicts, and you can just paste Buildar's rakefile.rb at the top.
+If you don't have a Rakefile, just start using Buildar's [rakefile.rb](https://github.com/rickhull/buildar/raw/master/rakefile.rb).  Otherwise, copy and paste Buildar's rakefile.rb into your Rakefile.  There may be some conflict over task names that you'll have to resolve.
 
 Alternative methods of getting a hold of rakefile.rb:
 
@@ -45,47 +44,64 @@ Alternative methods of getting a hold of rakefile.rb:
     git clone https://github.com/rickhull/buildar.git
     # a new directory is created, containing rakefile.rb
 
-Buildar creates your gemspec dynamically, and it relies on being able to find and read VERSION and MANIFEST.txt.  If you have different names for these files in your project, you can easily edit the top of the rakefile.rb.
-
-Buildar will keep your VERSION file updated, but it's up to you to make sure MANIFEST.txt is up to date.  There is intentionally no support for globs.  Just list all the files you want included in the resulting gem.
+No matter what, you'll need to edit the top of Buildar's rakefile.rb to suit your own project.
 
 Editing rakefile.rb
 -------------------
-We need to make a few edits to the rakefile.rb to match your project:
+There are only two sections you need to consider: the topmost section of the Buildar module that defines the constants and the .gemspec method, and the Rake::TestTask that defines where your test files live.
 
+    module Buildar
+      ##############################################
+      # Project-specific settings.  Edit as needed.
+      #
+      #
+      PROJECT_ROOT = File.dirname(__FILE__)
+      PROJECT_NAME = File.split(PROJECT_ROOT).last
+      VERSION_FILE = File.join(PROJECT_ROOT, 'VERSION')
+      MANIFEST_FILE = File.join(PROJECT_ROOT, 'MANIFEST.txt')
+
+      USE_GIT = true
+      GIT_COMMIT_VERSION = true   # commit version bump automatically
+      PUBLISH = {
+	rubygems: true,  # publish .gem to http://rubygems.org/
+      }
+
+      def self.gemspec
+	Gem::Specification.new do |s|
+	  # Static assignments
+	  s.name        = PROJECT_NAME
+	  s.summary     = "FIX"
+	  s.description = "FIX"
+	  s.authors     = ["FIX"]
+	  s.email       = "FIX@FIX.COM"
+	  s.homepage    = "http://FIX.COM/"
+	  s.licenses    = ['FIX']
+
+	  # Dynamic assignments
+	  s.files       = manifest
+	  s.version     = version
+	  s.date        = Time.now.strftime("%Y-%m-%d")
+
+	  # s.add_runtime_dependency  "rest-client", ["~> 1"]
+	  # s.add_runtime_dependency         "json", ["~> 1"]
+	  s.add_development_dependency "minitest", [">= 0"]
+	  s.add_development_dependency     "rake", [">= 0"]
+	end
+      end
+      #
+      #
+      # End project-specific settings.
+      ################################
+
+And the :test task:
+
+    # task :test runs your test files
+    #
     Rake::TestTask.new :test do |t|
-      # FIX for your layout
-      t.pattern = 'test/*.rb'
+      t.pattern = 'test/*.rb' # FIX for your layout
     end
 
-Buildar will infer the project name from the directory that contains the rakefile.rb.  You can set it directly instead, by editing the 2nd line:
-
-    PROJECT_ROOT = File.dirname(__FILE__)
-    PROJECT_NAME = File.split(PROJECT_ROOT).last
-
-Likewise, if you use different filenames for your version and manifests:
-
-    VERSION_FILE = File.join(PROJECT_ROOT, 'VERSION')
-    MANIFEST_FILE = File.join(PROJECT_ROOT, 'MANIFEST.txt')
-
-Next, find the :build task.  You'll want to edit in the static parts of your gemspec:
-
-      spec = Gem::Specification.new do |s|
-        # Static assignments
-        s.name        = PROJECT_NAME
-        s.summary     = "FIX"
-        s.description = "FIX"
-        s.authors     = ["FIX"]
-        s.email       = "FIX@FIX.COM"
-        s.homepage    = "http://FIX.COM/"
-        s.licenses    = ['FIX']
-
-As well as your dependencies:
-
-    #    s.add_runtime_dependency  "rest-client", ["~> 1"]
-    #    s.add_runtime_dependency         "json", ["~> 1"]
-        s.add_development_dependency "minitest", [">= 0"]
-        s.add_development_dependency     "rake", [">= 0"]
+Buildar's dynamically generated gemspec relies on being able to find and read VERSION and MANIFEST.txt.  Buildar will keep your VERSION file updated, but it's up to you to make sure MANIFEST.txt is up to date.  There is intentionally no support for globs.  Just list all the files you want included in the resulting gem.
 
 Git integration
 ---------------
