@@ -1,6 +1,6 @@
 Buildar
 =======
-Buildar lives inside your Rakefile, consisting of a ruby module and a set of tasks to help automate versioning, packaging, releasing, and publishing ruby gems, with optional git integration.
+Buildar provides a set of rake tasks to help automate versioning, packaging, releasing, and publishing ruby gems, with optional git integration.
 
 Rake tasks
 ----------
@@ -31,87 +31,61 @@ Philosophy
 
 Using Buildar
 -------------
-If you don't have a Rakefile, just start using Buildar's [rakefile.rb](https://github.com/rickhull/buildar/raw/master/rakefile.rb).  Otherwise, copy and paste Buildar's rakefile.rb into your Rakefile.  There may be some conflict over task names that you'll have to resolve.
+    $ gem install buildar # sudo as necessary
 
-Alternative methods of getting a hold of rakefile.rb:
+Add to your Rakefile:
 
-    gem install buildar  # sudo as nec
-    gem unpack buildar
-    # a new directory is created, containing rakefile.rb
+    require 'buildar/tasks'
 
-    ## OR ##
+    Buildar.conf(__FILE__) do { |b|
+      # ...
+    }
 
-    git clone https://github.com/rickhull/buildar.git
-    # a new directory is created, containing rakefile.rb
+Make sure you have a :test task
 
-No matter what, you'll need to edit the top of Buildar's rakefile.rb to suit your own project.
+    require 'rake/testtask'
 
-Editing rakefile.rb
--------------------
-There are only two sections you need to consider: the topmost section of the Buildar module that defines the constants and the .gemspec method, and the Rake::TestTask that defines where your test files live.
-
-    module Buildar
-      ##############################################
-      # Project-specific settings.  Edit as needed.
-      #
-      #
-      PROJECT_ROOT = File.dirname(__FILE__)
-      PROJECT_NAME = File.split(PROJECT_ROOT).last
-      VERSION_FILE = File.join(PROJECT_ROOT, 'VERSION')
-      MANIFEST_FILE = File.join(PROJECT_ROOT, 'MANIFEST.txt')
-
-      USE_GIT = true
-      GIT_COMMIT_VERSION = true   # commit version bump automatically
-      PUBLISH = {
-        rubygems: true,  # publish .gem to http://rubygems.org/
-      }
-
-      def self.gemspec
-        Gem::Specification.new do |s|
-          # Static assignments
-          s.name        = PROJECT_NAME
-          s.summary     = "FIX"
-          s.description = "FIX"
-          s.authors     = ["FIX"]
-          s.email       = "FIX@FIX.COM"
-          s.homepage    = "http://FIX.COM/"
-          s.licenses    = ['FIX']
-
-          # Dynamic assignments
-          s.files       = manifest
-          s.version     = version
-          s.date        = Time.now.strftime("%Y-%m-%d")
-
-          # s.add_runtime_dependency  "rest-client", ["~> 1"]
-          # s.add_runtime_dependency         "json", ["~> 1"]
-          s.add_development_dependency "minitest", [">= 0"]
-          s.add_development_dependency     "rake", [">= 0"]
-        end
-      end
-      #
-      #
-      # End project-specific settings.
-      ################################
-
-And the :test task:
-
-    # task :test runs your test files
+    # runs your test files
     #
     Rake::TestTask.new :test do |t|
       t.pattern = 'test/*.rb' # FIX for your layout
     end
 
-Buildar's dynamically generated gemspec relies on being able to find and read VERSION and MANIFEST.txt.  Buildar will keep your VERSION file updated, but it's up to you to make sure MANIFEST.txt is up to date.  There is intentionally no support for globs.  Just list all the files you want included in the resulting gem.
+Dogfood
+-------
+Here is Buildar's rakefile.rb:
+
+    require 'buildar/tasks'
+    require 'rake/testtask'
+
+    Buildar.conf(__FILE__) do |b|
+      b.version_filename = 'VERSION'
+      b.manifest_filename = 'MANIFEST.txt'
+      b.use_git = true
+      b.publish[:rubygems] = true
+      b.gemspec.name = 'buildar'
+      b.gemspec.summary = 'Buildar crept inside your rakefile and scratched some tasks'
+      b.gemspec.description = 'Buildar helps automate the release process with versioning, building, packaging, and publishing.  Optional git integration'
+      b.gemspec.author = 'Rick Hull'
+      b.gemspec.homepage = 'https://github.com/rickhull/buildar'
+      b.gemspec.license = 'MIT'
+      b.gemspec.has_rdoc = true
+    end
+
+    Rake::TestTask.new :test do |t|
+      t.pattern = 'test/*.rb'
+    end
+
+You can use it as a starting point.
 
 Git integration
 ---------------
-Set `USE_GIT = false` if you're not interested in any of the following:
+Disable git integration by `b.use_git = false` if you're not interested in any of the following:
 
 * `tag` is a `release` dependency.  It depends on `test`
-* `bump` and friends will commit VERSION changes `if USE_GIT and GIT_COMMIT_VERSION`
-* `gitpush` simply does `git push origin`
+* `bump` and friends will commit VERSION changes
 
-Setting `USE_GIT = false` will not cause any tasks to fail, so e.g. `tag` succeeds as a prerequisite for `release`.
+Disabling git integration will not cause any tasks to fail.
 
 Testing it out
 --------------
@@ -122,3 +96,15 @@ Testing it out
     rake release  # build the .gem and push it rubygems.org
 
 `rake release` depends on `verify_publish_credentials` which will fail if you don't have `~/.gem/credentials`.  In that case, sign up for an account at http://rubygems.org/ and follow the instructions to get your credentials file setup.
+
+version_file
+------------
+TBD
+
+manifest_file
+-------------
+TBD
+
+Notes
+-----
+Buildar's dynamically generated gemspec relies on being able to find and read VERSION and MANIFEST.txt.  Buildar will keep your VERSION file updated, but it's up to you to make sure MANIFEST.txt is up to date.  There is intentionally no support for globs.  Just list all the files you want included in the resulting gem.
