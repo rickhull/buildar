@@ -105,10 +105,10 @@ Buildar's dynamically generated gemspec relies on being able to find and read VE
 
 Git integration
 ---------------
-`USE_GIT = false` if you're not interested in any of the following:
-* [task :tag](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L24) is a [task :release](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L136) dependency.  It depends on [task :test](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L4).
-* The [:bump_* tasks](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L91) will commit VERSION changes if USE_GIT and GIT_COMMIT_VERSION
-* [task :gitpush](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L128) simply does `git push origin`
+Set `USE_GIT = false` if you're not interested in any of the following:
+* `tag` is a `release` dependency.  It depends on `test`
+* `bump` and friends_* will commit VERSION changes if USE_GIT and GIT_COMMIT_VERSION
+* `gitpush` simply does `git push origin`
 
 Testing it out
 --------------
