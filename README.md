@@ -106,9 +106,12 @@ Buildar's dynamically generated gemspec relies on being able to find and read VE
 Git integration
 ---------------
 Set `USE_GIT = false` if you're not interested in any of the following:
+
 * `tag` is a `release` dependency.  It depends on `test`
 * `bump` and friends will commit VERSION changes `if USE_GIT and GIT_COMMIT_VERSION`
 * `gitpush` simply does `git push origin`
+
+Setting `USE_GIT = false` will not cause any tasks to fail, so e.g. `tag` succeeds as a prerequisite for `release`.
 
 Testing it out
 --------------
