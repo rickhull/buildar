@@ -95,11 +95,11 @@ end
   task "bump_#{v}" do
     old_version = version
     new_version = bump(v, old_version)
-    puts "bumping #{old_version}  to #{new_version}"
+    puts "bumping #{old_version} to #{new_version}"
     write_version new_version
     if USE_GIT and GIT_COMMIT_VERSION
       sh "git add VERSION"
-      sh "git commit -m 'rake bump_#{v}'"
+      sh "git commit -m 'rake bump_#{v} to #{new_version}'"
     end
   end
 }
