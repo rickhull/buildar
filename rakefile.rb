@@ -146,8 +146,8 @@ end
     puts "bumping #{old_version} to #{new_version}"
     Buildar.write_version new_version
     if Buildar::USE_GIT and Buildar::GIT_COMMIT_VERSION
-      sh "git add VERSION"
-      sh "git commit -m 'rake bump_#{v} to #{new_version}'"
+      msg = "rake bump_#{v} to #{new_version}"
+      sh "git commit #{Buildar::VERSION_FILE} -m '#{msg}'"
     end
   end
 }
