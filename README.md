@@ -5,24 +5,24 @@ packaging, releasing, and publishing ruby gems, with optional git integration.
 
 Rake tasks
 ----------
-* version - show the current project version (./VERSION)
-* manifest - show the files tracked by the gem (./MANIFEST.txt)
-* tag - git tag according to current version, pushed to origin
-* bump_build - increment the 4th version number (1.2.3.4 -> 1.2.3.5)
-* bump_patch - increment the 3rd version number (1.2.3.4 -> 1.2.4.0)
-* bump_minor - increment the 2nd version number (1.2.3.4 -> 1.3.0.0)
-* bump_major - increment the 1st version number (1.2.3.4 -> 2.0.0.0)
-* build - bump_build, build a .gem file inside pkg/
-* publish - gem push
-* release - build, tag, publish
-* release_patch - bump_patch, release
-* release_minor - bump_minor, release
-* release_major - bump_major, release
-* test - from 'rake/testtask'
+* `version` show the current project version (./VERSION)
+* `manifest` show the files tracked by the gem (./MANIFEST.txt)
+* `tag` git tag according to current version, pushed to origin
+* `bump_build` increment the 4th version number (1.2.3.4 -> 1.2.3.5)
+* `bump_patch` increment the 3rd version number (1.2.3.4 -> 1.2.4.0)
+* `bump_minor` increment the 2nd version number (1.2.3.4 -> 1.3.0.0)
+* `bump_major` increment the 1st version number (1.2.3.4 -> 2.0.0.0)
+* `build` bump_build, build a .gem file inside pkg/
+* `publish` gem push
+* `release` build, tag, publish
+* `release_patch` bump_patch, release
+* `release_minor` bump_minor, release
+* `release_major` bump_major, release
+* `test` from 'rake/testtask'
 
 Philosophy
 ----------
-* Track the release version in one place: ./VERSION
+* Track the release version in one place: `./VERSION`
 * The version only matters in the context of a release.  For internal development, git SHAs vastly outclass version numbers.
 * "The right version number" for the next release is a function of the current release version and the magnitude (or breakiness) of the change
 * http://semver.org/
@@ -88,7 +88,7 @@ As well as your dependencies:
 
 Git integration
 ---------------
-Set USE_GIT = false if you're not interested in any of the following:
+`USE_GIT = false` if you're not interested in any of the following:
 * [task :tag](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L24) is a [task :release](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L136) dependency.  It depends on [task :test](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L4).
 * The [:bump_* tasks](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L91) will commit VERSION changes if USE_GIT and GIT_COMMIT_VERSION
 * [task :gitpush](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L128) simply does `git push origin`
@@ -101,4 +101,4 @@ Testing it out
     rake build    # build a .gem file in pkg/
     rake release  # build the .gem and push it rubygems.org
 
-`rake release` depends on :verify_publish_credentials, which will fail if you don't have ~/.gem/credentials.  In that case, sign up for an account at http://rubygems.org/ and follow the instructions to get your credentials file setup.
+`rake release` depends on :verify_publish_credentials, which will fail if you don't have `~/.gem/credentials`.  In that case, sign up for an account at http://rubygems.org/ and follow the instructions to get your credentials file setup.
