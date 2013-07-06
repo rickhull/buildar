@@ -20,6 +20,14 @@ def version
   File.read(VERSION_FILE).chomp
 end
 
+task :message do
+  unless ENV['message']
+    puts "Enter a one-line message:"
+    print " > "
+    ENV['message'] = $stdin.gets.chomp
+  end
+end
+
 task :version do
   puts "#{PROJECT_NAME} #{version}"
 end
@@ -27,7 +35,8 @@ end
 task :tag => [:test] do
   if USE_GIT
     tagname = "v#{version}"
-    sh "git tag -a #{tagname} -m 'auto-tagged #{tagname} by Rake'"
+    message = ENV['message'] || "auto-tagged #{tagname} by Rake"
+    sh "git tag -a #{tagname} -m '#{message}'"
     sh "git push origin --tags"
   end
 end
@@ -140,7 +149,8 @@ task :gitpush do
   # consider a timeout?
 end
 
-task :release => [:build, :tag, :publish, :gitpush]
+task :release => [:message, :build, :tag, :publish, :gitpush]
+
 task :release_patch => [:bump_patch, :release]
 task :release_minor => [:bump_minor, :release]
 task :release_major => [:bump_major, :release]
