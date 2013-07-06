@@ -29,13 +29,6 @@ Philosophy
 * Automate everything
 * This does not absolve you from attentending to changelogs, etc.
 
-Git integration
----------------
-Set USE_GIT = false if you're not interested in any of the following:
-* [task :tag](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L24) is a [task :release](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L136) dependency.  It depends on [task :test](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L4).
-* The [:bump_* tasks](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L91) will commit VERSION changes if USE_GIT and GIT_COMMIT_VERSION
-* [task :gitpush](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L128) simply does `git push origin`
-
 Using Buildar
 -------------
 Just integrate Buildar's [rakefile.rb](https://github.com/rickhull/buildar/raw/master/rakefile.rb) with your project's metadata and existing Rakefile.  For the Rakefile, hopefully nothing conflicts, and you can just paste Buildar's rakefile.rb at the top.
@@ -55,8 +48,8 @@ Buildar creates your gemspec dynamically, and it relies on being able to find an
 
 Buildar will keep your VERSION file updated, but it's up to you to make sure MANIFEST.txt is up to date.  There is intentionally no support for globs.  Just list all the files you want included in the resulting gem.
 
-Integrating rakefile.rb
------------------------
+Editing rakefile.rb
+-------------------
 We need to make a few edits to the rakefile.rb to match your project:
 
     Rake::TestTask.new :test do |t|
@@ -92,6 +85,13 @@ As well as your dependencies:
     #    s.add_runtime_dependency         "json", ["~> 1"]
         s.add_development_dependency "minitest", [">= 0"]
         s.add_development_dependency     "rake", [">= 0"]
+
+Git integration
+---------------
+Set USE_GIT = false if you're not interested in any of the following:
+* [task :tag](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L24) is a [task :release](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L136) dependency.  It depends on [task :test](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L4).
+* The [:bump_* tasks](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L91) will commit VERSION changes if USE_GIT and GIT_COMMIT_VERSION
+* [task :gitpush](https://github.com/rickhull/buildar/blob/master/rakefile.rb#L128) simply does `git push origin`
 
 Testing it out
 --------------
