@@ -118,4 +118,4 @@ Testing it out
     rake build    # build a .gem file in pkg/
     rake release  # build the .gem and push it rubygems.org
 
-`rake release` depends on :verify_publish_credentials, which will fail if you don't have `~/.gem/credentials`.  In that case, sign up for an account at http://rubygems.org/ and follow the instructions to get your credentials file setup.
+`rake release` depends on `verify_publish_credentials` which will fail if you don't have `~/.gem/credentials`.  In that case, sign up for an account at http://rubygems.org/ and follow the instructions to get your credentials file setup.
