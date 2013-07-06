@@ -1,4 +1,5 @@
 require 'buildar/tasks'
+require 'rake/testtask'
 
 Buildar.conf(__FILE__) do |b|
   b.version_filename = 'VERSION'
@@ -14,7 +15,6 @@ Buildar.conf(__FILE__) do |b|
   b.gemspec.has_rdoc = true
 end
 
-require 'rake/testtask'
 Rake::TestTask.new :test do |t|
-  t.pattern = 'test/*.rb' # FIX for your layout
+  t.pattern = 'test/*.rb'
 end
