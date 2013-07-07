@@ -7,6 +7,11 @@
 # And it can't be set to nil, for example.
 #
 class Buildar
+  def self.version
+    vpath = File.join(File.dirname(__FILE__), '..', 'VERSION')
+    File.read(vpath).chomp
+  end
+
   # Call this from the rakefile, like:
   #   Buildar.conf(__FILE__) do |b|
   #     b.name = 'foo'
