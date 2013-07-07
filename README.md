@@ -111,12 +111,17 @@ end
 
 Use a VERSION file
 ------------------
-If you enable `b.use_version_file` and specify `b.version_filename`, then Buildar will be able to `bump_major` `bump_minor` `bump_patch` and `bump_build`.  This helps with a repeatable release process:
+Assuming
+```ruby
+  b.use_version_file = true
+  b.version_filename = 'VERSION'
+```
+Buildar will be able to `bump_major` `bump_minor` `bump_patch` and `bump_build`.  This helps with a repeatable release process:
 * `build` depends on `bump_build` etc.
 * `release` depends on `build` etc.
 * `release_patch` depends on `bump_patch` `release` etc.
 
-Assuming `b.version_filename = 'VERSION'`, add to your primary class or module:
+To integrate a VERSION file with your lib or app:
 ```ruby
 # e.g. lib/foo.rb
 #################
