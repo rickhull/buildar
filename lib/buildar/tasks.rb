@@ -65,6 +65,7 @@ task :tag => [:test] do
   end
 end
 
+# if proj.publish[:rubygems]
 # roughly, gem push foo-VERSION.gem
 #
 task :publish => [:verify_publish_credentials] do
@@ -86,6 +87,7 @@ task :publish => [:verify_publish_credentials] do
   end
 end
 
+# if proj.publish[:rubygems]
 # just make sure the ~/.gem/credentials file is readable
 #
 task :verify_publish_credentials do
@@ -103,10 +105,18 @@ task :version do
   puts "#{proj.name} #{proj.version}"
 end
 
-# display Buildar's understanding of the manifest file
+# display Buildar's understanding of the files inside the gem
 #
 task :manifest do
-  puts proj.manifest.join("\n") if proj.use_manifest_file
+  if proj.use_manifest_file
+    puts proj.manifest.join("\n")
+  elsif !proj.gemspec.files
+    puts "warning: gemspec.files is false or nil"
+  elsif proj.gemspec.files.empty?
+    puts "warning: gemspec.files is empty"
+  else
+    puts proj.gemspec.files.join("\n")
+  end
 end
 
 # if the user wants a bump, make it a patch
