@@ -10,8 +10,9 @@ Rake tasks
 * `publish` - `verify publish credentials` gem push
 * `tag` - `test` git tag according to current version, pushed to origin
 * `message` - capture a message from ENV['message'] or prompt STDIN
-* `manifest` - show the files tracked by the gem (./MANIFEST.txt)
-* `version` - show the current project version (./VERSION)
+* `install` - `test` `build` uninstall, install .gem
+* `version` - show the current project version
+* `manifest` - show the files tracked by the gem
 * `bump_build` - increment the 4th version number (1.2.3.4 -> 1.2.3.5)
 * `bump_patch` - increment the 3rd version number (1.2.3.4 -> 1.2.4.0)
 * `bump_minor` - increment the 2nd version number (1.2.3.4 -> 1.3.0.0)
