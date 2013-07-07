@@ -44,8 +44,10 @@ Edit your Rakefile.  Add to the top:
     }
 
     # make sure you have a task named :test, even if it's empty
-    #task :test do
-    #end
+    task :test do
+    end
+
+That is actually the minimal Rakefile needed for Buildar to operate.  However, it will be a crappy gem full of "FIX" throughout its metadata.
 
 Dogfood
 -------
@@ -55,10 +57,6 @@ Here is Buildar's rakefile.rb:
     require 'rake/testtask'
 
     Buildar.conf(__FILE__) do |b|
-      b.version_filename = 'VERSION'
-      b.manifest_filename = 'MANIFEST.txt'
-      b.use_git = true
-      b.publish[:rubygems] = true
       b.gemspec.name = 'buildar'
       b.gemspec.summary = 'Buildar crept inside your rakefile and scratched some tasks'
       b.gemspec.description = 'Buildar helps automate the release process with versioning, building, packaging, and publishing.  Optional git integration'
@@ -73,6 +71,45 @@ Here is Buildar's rakefile.rb:
     end
 
 You can use it as a starting point.
+
+The default gemspec
+-------------------
+    def gemspec
+      @gemspec ||= Gem::Specification.new do |s|
+	# Static assignments
+	s.summary     = "FIX"
+	s.description = "FIX"
+	s.authors     = ["FIX"]
+	s.email       = "FIX@FIX.COM"
+	s.homepage    = "http://FIX.COM/"
+	s.licenses    = ['FIX']
+	# s.has_rdoc    = true
+	# s.test_files  = ['FIX']
+
+	s.add_development_dependency     "rake", [">= 0"]
+	s.add_development_dependency  "buildar", ["~> 1.0"]
+      end
+      # Make sure things tracked elsewhere stay updated
+      @gemspec.name = @name
+      @gemspec.files = self.manifest if @use_manifest_file
+      @gemspec.version = self.version
+      @gemspec
+    end
+
+Buildar conf options
+--------------------
+    attr_accessor :root, :name, :version_filename, :manifest_filename,
+		  :use_git, :publish, :use_manifest_file
+
+    def initialize(root = nil, name = nil)
+      @root = root ? File.expand_path(root) : Dir.pwd
+      @name = name || File.split(@root).last
+      @version_filename = 'VERSION'
+      @use_manifest_file = true
+      @manifest_filename = 'MANIFEST.txt'
+      @use_git = true
+      @publish = { rubygems: true }
+    end
 
 Git integration
 ---------------
