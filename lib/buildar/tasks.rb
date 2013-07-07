@@ -52,9 +52,9 @@ end
   end
 }
 
-# if proj.use_git:
 # create annotated git tag based on VERSION and ENV['message'] if available
 # push tags to origin
+# if proj.use_git:
 #
 task :tag => [:test] do
   if proj.use_git
@@ -65,8 +65,8 @@ task :tag => [:test] do
   end
 end
 
-# if proj.publish[:rubygems]
 # roughly, gem push foo-VERSION.gem
+# if proj.publish[:rubygems]
 #
 task :publish => [:verify_publish_credentials] do
   if proj.publish[:rubygems]
@@ -87,8 +87,8 @@ task :publish => [:verify_publish_credentials] do
   end
 end
 
-# if proj.publish[:rubygems]
 # just make sure the ~/.gem/credentials file is readable
+# if proj.publish[:rubygems]
 #
 task :verify_publish_credentials do
   if proj.publish[:rubygems]
