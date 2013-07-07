@@ -133,6 +133,8 @@ module Foo
 end
 ```
 
+If you stick with the default `b.use_version_file = false` then you need to make sure to keep the gemspec version updated.
+
 Git integration
 ---------------
 Disable git integration by `b.use_git = false` if you're not interested in any of the following:
