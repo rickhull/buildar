@@ -168,13 +168,19 @@ You need to make sure this file stays up to date.  Buildar just reads it.
 
 If you stick with the default `b.use_manifest_file = false` then you need to make sure to keep the gemspec.files attribute updated.
 
-Git integration
----------------
-Disable git integration by `b.use_git = false` if you're not interested in any of the following:
+Integrate with git
+------------------
+Enable git integration with `b.use_git = true`.  This empowers:
 * `tag` is a `release` dependency.  It depends on `message` and `test`
 * `bump` and friends will commit VERSION changes
 
-Disabling git integration will not cause any tasks to fail.
+Disabling git integration (the default) will not cause any tasks to fail.
+
+Publish to rubygems.org
+-----------------------
+Enable rubygems.org publishing with `b.publish[:rubygems] = true`.
+
+This empowers `publish`
 
 Testing it out
 --------------
@@ -186,4 +192,4 @@ rake build    # build a .gem file in pkg/
 rake release  # build the .gem and push it rubygems.org
 ```
 
-`rake release` depends on `verify_publish_credentials` which will fail if you don't have `~/.gem/credentials`.  In that case, sign up for an account at http://rubygems.org/ and follow the instructions to get your credentials file setup.
+`rake release` depends on `publish` which depends on `verify_publish_credentials` which will fail if you don't have `~/.gem/credentials`.  In that case, sign up for an account at http://rubygems.org/ and follow the instructions to get your credentials file setup.
