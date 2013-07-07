@@ -121,11 +121,11 @@ Testing it out
 --------------
 
 ```
-    rake version  # print the version according to VERSION
-    rake manifest # likewise for MANIFEST.txt
-    rake bump     # bump the patch number in VERSION (1.2.3.4 -> 1.2.4.0)
-    rake build    # build a .gem file in pkg/
-    rake release  # build the .gem and push it rubygems.org
+rake version  # print the version according to VERSION
+rake manifest # likewise for MANIFEST.txt
+rake bump     # bump the patch number in VERSION (1.2.3.4 -> 1.2.4.0)
+rake build    # build a .gem file in pkg/
+rake release  # build the .gem and push it rubygems.org
 ```
 
 `rake release` depends on `verify_publish_credentials` which will fail if you don't have `~/.gem/credentials`.  In that case, sign up for an account at http://rubygems.org/ and follow the instructions to get your credentials file setup.
