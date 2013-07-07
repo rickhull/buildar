@@ -41,6 +41,7 @@ task :install => [:build] do
   sh "gem install #{proj.gemfile}"
 end
 
+# if proj.use_version_file
 # tasks :bump_major, :bump_minor, :bump_patch, :bump_build
 # commit the version file if proj.use_git
 #
