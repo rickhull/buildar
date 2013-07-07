@@ -22,7 +22,7 @@ Rake tasks
 
 Philosophy
 ----------
-* Track the release version in one place: `./VERSION`
+* Track the release version in one place: a version file freely readable and writable
 * The version only matters in the context of a release.  For internal development, git SHAs vastly outclass version numbers.
 * "The right version number" for the next release is a function of the current release version and the magnitude (or breakiness) of the change
 * http://semver.org/
@@ -31,7 +31,7 @@ Philosophy
 
 Install
 -------
-    $ gem install buildar # sudo as necessary
+    $ gem install buildar     # sudo as necessary
 
 Usage
 -----
@@ -96,26 +96,29 @@ The default gemspec
       @gemspec
     end
 
-Buildar conf options
---------------------
-    attr_accessor :root, :name, :version_filename, :manifest_filename,
-                  :use_git, :publish, :use_manifest_file
+Maximal configuration
+---------------------
+    Buildar.conf(__FILE__) do |b|
+      # Buildar options
+      b.root = '/path/to/project'
+	  b.name = 'Project'
+	  b.version_filename = 'VERSION.txt'
+	  b.use_manifest_file = true
+	  b.manifest_filename = 'MANIFEST'
+	  b.use_git = true
+	  b.publish[:rubygems] = true
 
-    def initialize(root = nil, name = nil)
-      @root = root ? File.expand_path(root) : Dir.pwd
-      @name = name || File.split(@root).last
-      @version_filename = 'VERSION'
-      @use_manifest_file = true
-      @manifest_filename = 'MANIFEST.txt'
-      @use_git = true
-      @publish = { rubygems: true }
-    end
+	  # Gemspec Options
+	  b.gemspec.author = 'Yours Truly'
+	  #        ...
+	  b.gemspec.version = '2.0'
+	end
 
 Git integration
 ---------------
 Disable git integration by `b.use_git = false` if you're not interested in any of the following:
 
-* `tag` is a `release` dependency.  It depends on `test`
+* `tag` is a `release` dependency.  It depends on `message` and `test`
 * `bump` and friends will commit VERSION changes
 
 Disabling git integration will not cause any tasks to fail.
