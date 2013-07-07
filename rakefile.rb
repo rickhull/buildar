@@ -2,10 +2,6 @@ require 'buildar/tasks'
 require 'rake/testtask'
 
 Buildar.conf(__FILE__) do |b|
-  b.version_filename = 'VERSION'
-  b.manifest_filename = 'MANIFEST.txt'
-  b.use_git = true
-  b.publish[:rubygems] = true
   b.gemspec.name = 'buildar'
   b.gemspec.summary = 'Buildar crept inside your rakefile and scratched some tasks'
   b.gemspec.description = 'Buildar helps automate the release process with versioning, building, packaging, and publishing.  Optional git integration'
