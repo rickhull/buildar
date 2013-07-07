@@ -7,9 +7,12 @@
 # And it can't be set to nil, for example.
 #
 class Buildar
+  def self.dir(file)
+    File.expand_path('..', file)
+  end
+
   def self.version
-    vpath = File.join(File.dirname(__FILE__), '..', 'VERSION')
-    File.read(vpath).chomp
+    File.read(File.join(dir(__FILE__), 'VERSION')).chomp
   end
 
   # Call this from the rakefile, like:
@@ -58,28 +61,51 @@ class Buildar
     }.join('.')
   end
 
-  attr_accessor :root, :name, :version_filename, :manifest_filename,
-                :use_git, :publish, :use_manifest_file, :use_version_file
+  attr_accessor :root, :name,
+                :use_git, :publish,
+                :use_gemspec_file, :gemspec_filename,
+                :use_version_file, :version_filename,
+                :use_manifest_file, :manifest_filename
+
+  attr_writer :gemspec_filename
 
   def initialize(root = nil, name = nil)
     @root = root ? File.expand_path(root) : Dir.pwd
     @name = name || File.split(@root).last
+    @use_git = false
+    @publish = { rubygems: false }
+    @use_gemspec_file = true
+    self.gemspec_filename
     @use_version_file = false
     @version_filename = 'VERSION'
     @use_manifest_file = false
     @manifest_filename = 'MANIFEST.txt'
-    @use_git = false
-    @publish = { rubygems: false }
   end
 
-  # created on demand and kept up to date
-  #
+  def gemspec_filename
+    @gemspec_filename ||= "#{@name}.gemspec"
+    @gemspec_filename
+  end
+
+  def gemspec_file
+    @gemspec_file = File.join(@root, self.gemspec_filename)
+  end
+
   def gemspec
-    @gemspec ||= Gem::Specification.new
-    @gemspec.name = @name
-    @gemspec.files = self.manifest if @use_manifest_file
-    @gemspec.version = self.version if @use_version_file
-    @gemspec
+    @gemspec ||= self.hard_gemspec
+  end
+
+  def hard_gemspec
+    #eval(File.read(self.gemspec_file))
+    @hard_gemspec = Gem::Specification.load self.gemspec_file
+  end
+
+  def soft_gemspec
+    @soft_gemspec ||= Gem::Specification.new
+    @soft_gemspec.name = @name
+    @soft_gemspec.version = self.version if @use_version_file
+    @soft_gemspec.files = self.manifest if @use_manifest_file
+    @soft_gemspec
   end
 
   def gemfile
@@ -91,24 +117,24 @@ class Buildar
   def available_version
     if @use_version_file
       self.version
-    elsif !@gemspec.version
-      raise "gemspec.version is false or nil"
-    elsif @gemspec.version.to_s.empty?
-      raise "gemspec.version is empty"
+    #elsif !@gemspec.version
+    #  raise "gemspec.version is false or nil"
+    #elsif @gemspec.version.to_s.empty?
+    #  raise "gemspec.version is empty"
     else
-      @gemspec.version
+      self.gemspec.version
     end
   end
 
   def available_manifest
     if @use_manifest_file
       self.manifest
-    elsif !@gemspec.files
-      raise "gemspec.files is false or nil"
-    elsif @gemspec.files.empty?
-      raise "gemspec.files is empty"
+#    elsif !@gemspec.files
+#      raise "gemspec.files is false or nil"
+#    elsif @gemspec.files.empty?
+#      raise "gemspec.files is empty"
     else
-      @gemspec.files
+      self.gemspec.files
     end
   end
 
