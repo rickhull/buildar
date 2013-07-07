@@ -116,7 +116,10 @@ With `b.use_version_file = true` Buildar will be able to `bump_major` `bump_mino
 * `release` depends on `build` etc.
 * `release_patch` depends on `bump_patch` `release` etc.
 
-To integrate `b.version_filename = 'VERSION'`:
+Assume `b.version_filename = 'VERSION'`
+
+To make your app or lib aware of its version via this file, simply:
+
 ```ruby
 # e.g. lib/foo.rb
 #################
