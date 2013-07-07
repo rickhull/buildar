@@ -36,6 +36,11 @@ task :build => [:test, :bump_build] do
   Rake::Task["package"].invoke
 end
 
+task :install => [:build] do
+  sh "gem uninstall #{proj.name}"
+  sh "gem install #{proj.gemfile}"
+end
+
 # tasks :bump_major, :bump_minor, :bump_patch, :bump_build
 # commit the version file if proj.use_git
 #
@@ -71,22 +76,7 @@ end
 # roughly, gem push foo-VERSION.gem
 #
 task :publish => [:verify_publish_credentials] do
-  if proj.publish[:rubygems]
-    fragment = "-#{proj.available_version}.gem"
-    pkg_dir = File.join(proj.root, 'pkg')
-    Dir.chdir(pkg_dir) {
-      candidates = Dir.glob "*#{fragment}"
-      # sanity check
-      case candidates.length
-      when 0
-        raise "could not find .gem matching #{fragment}"
-      when 1
-        sh "gem push #{candidates.first}"
-      else
-        raise "multiple candidates found matching #{fragment}"
-      end
-    }
-  end
+  sh "gem push #{proj.gemfile}" if proj.publish[:rubygems]
 end
 
 # if proj.publish[:rubygems]
