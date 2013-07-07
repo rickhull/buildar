@@ -31,7 +31,9 @@ Philosophy
 
 Install
 -------
-    $ gem install buildar     # sudo as necessary
+```shell
+$ gem install buildar     # sudo as necessary
+```
 
 Usage
 -----
@@ -119,8 +121,7 @@ Disabling git integration will not cause any tasks to fail.
 
 Testing it out
 --------------
-
-```
+```shell
 rake version  # print the version according to VERSION
 rake manifest # likewise for MANIFEST.txt
 rake bump     # bump the patch number in VERSION (1.2.3.4 -> 1.2.4.0)
