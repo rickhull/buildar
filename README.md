@@ -40,17 +40,19 @@ Edit your Rakefile.  Add to the top:
     require 'buildar/tasks'
 
     Buildar.conf(__FILE__) do |b|
-      b.name = 'Example'             # optional, inferred from directory
-	  b.gemspec.version = '1.0'      # required, unless b.use_version_file
+	  b.name = 'Example'             # optional, inferred from directory
+      b.gemspec.version = '1.0'      # required, unless b.use_version_file
 	  b.gemspec.files = ['Rakefile'] # required, unless b.use_manifest_file
-    end
+	  b.gemspec.summary = 'Summary'  # required
+	  b.gemspec.author = 'Buildar'   # required
+	end
 
-    # make sure you have a task named :test, even if it's empty
-    task :test do
+	# make sure you have a task named :test, even if it's empty
+	task :test do
 	  # ...
-    end
+	end
 
-That is basically the [minimal Rakefile needed for Buildar to operate](https://github.com/rickhull/buildar/blob/master/examples/minimal.rb).  However, this would generate a crappy gem full of "FIX" throughout its metadata.
+That is basically the [minimal Rakefile needed for Buildar to operate](https://github.com/rickhull/buildar/blob/master/examples/minimal.rb).  However, this would generate a skeleton gem not worth building or publishing.
 
 Dogfood
 -------
@@ -71,17 +73,19 @@ Here is Buildar's [rakefile.rb](https://github.com/rickhull/buildar/blob/master/
 	  b.gemspec.homepage = 'https://github.com/rickhull/buildar'
 	  b.gemspec.license = 'MIT'
 	  b.gemspec.has_rdoc = true
+      b.gemspec.add_runtime_dependency        "rake", ">= 5" # guess?
+      b.gemspec.add_development_dependency "buildar", "~> 1.0"
 	end
 
     Rake::TestTask.new :test do |t|
 	  t.pattern = 'test/*.rb'
 	end
 
-
 You can use it as a starting point.
 
 The maximal configuration
 ---------------------
+
     Buildar.conf(__FILE__) do |b|
       # Buildar options
       b.root = '/path/to/project'
