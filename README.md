@@ -143,7 +143,7 @@ If you stick with the default `b.use_version_file = false` then you need to make
 
 Use a MANIFEST.txt file
 -----------------------
-It can be useful to track your project's files outside of your gemspec.  When enabled, Buildar will inject the contents of this file into your gemspec's attribute.  You need to make sure this file stays up to date.  Buildar just reads it.
+It can be useful to track your project's files outside of your gemspec.  When enabled, Buildar will inject the contents of this file into your gemspec.files.  You need to make sure this file stays up to date.  Buildar just reads it.
 
 If you stick with the default `b.use_manifest_file = false` then you need to make sure to keep the gemspec.files attribute updated.
 
