@@ -1,3 +1,4 @@
+buildar.gemspec
 MANIFEST.txt
 VERSION
 rakefile.rb
