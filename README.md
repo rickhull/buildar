@@ -1,18 +1,25 @@
 Buildar
 =======
-Buildar provides a set of rake tasks to help automate versioning, packaging, releasing, and publishing ruby gems, with optional git integration.
+Buildar provides a set of rake tasks to help automate releases: versioning, packaging, and publishing ruby gems, with a set of options to help integrate with your current project.
 
 Rake tasks
 ----------
+Core
 * `release` - `message` `build` `tag` `publish`
 * `build` - `test` `bump_build` build a .gem file inside pkg/
 * `test` - runs your tests using rake/testtask
-* `publish` - `verify publish credentials` gem push
-* `tag` - `test` git tag according to current version, pushed to origin
 * `message` - capture a message from ENV['message'] or prompt STDIN
 * `install` - `build` uninstall, install built .gem
 * `version` - show the current project version
 * `manifest` - show the files tracked by the gem
+
+With rubygems.org integration
+* `publish` - `verify publish credentials` gem push
+
+With git integration
+* `tag` - `test` git tag according to current version, pushed to origin
+
+With version file integration
 * `bump_build` - increment the 4th version number (1.2.3.4 -> 1.2.3.5)
 * `bump_patch` - increment the 3rd version number (1.2.3.4 -> 1.2.4.0)
 * `bump_minor` - increment the 2nd version number (1.2.3.4 -> 1.3.0.0)
@@ -23,12 +30,10 @@ Rake tasks
 
 Philosophy
 ----------
-* Track the release version in one place: a version file freely readable and writable
 * The version only matters in the context of a release.  For internal development, git SHAs vastly outclass version numbers.
 * "The right version number" for the next release is a function of the current release version and the magnitude (or breakiness) of the change
 * http://semver.org/
 * Automate everything
-* This does not absolve you from attentending to changelogs, etc.
 
 Install
 -------
