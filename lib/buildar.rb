@@ -68,8 +68,8 @@ class Buildar
     @version_filename = 'VERSION'
     @use_manifest_file = false
     @manifest_filename = 'MANIFEST.txt'
-    @use_git = true
-    @publish = { rubygems: true }
+    @use_git = false
+    @publish = { rubygems: false }
   end
 
   # created on demand and kept up to date
