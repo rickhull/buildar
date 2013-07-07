@@ -116,6 +116,12 @@ Enable and configure a version file:
   b.use_version_file = true
   b.version_filename = 'VERSION'
 ```
+
+The VERSION file should look something like
+```
+1.2.3.4
+```
+
 Buildar will be able to `bump_major` `bump_minor` `bump_patch` and `bump_build`.  This helps with a repeatable release process:
 * `build` depends on `bump_build` etc.
 * `release` depends on `build` etc.
@@ -143,7 +149,22 @@ If you stick with the default `b.use_version_file = false` then you need to make
 
 Use a MANIFEST.txt file
 -----------------------
-It can be useful to track your project's files outside of your gemspec.  When enabled, Buildar will inject the contents of this file into your gemspec.files.  You need to make sure this file stays up to date.  Buildar just reads it.
+It can be useful to track your project's files outside of your gemspec.  When enabled, Buildar will inject the contents of this file into your gemspec.files.
+```ruby
+  b.use_manifest_file
+  b.manifest_filename = 'MANIFEST.txt'
+```
+
+Here is Buildar's [MANIFEST.txt](https://github.com/rickhull/buildar/blob/master/MANIFEST.txt)
+
+    MANIFEST.txt
+	VERSION
+	rakefile.rb
+	lib/buildar.rb
+	lib/buildar/tasks.rb
+
+
+You need to make sure this file stays up to date.  Buildar just reads it.
 
 If you stick with the default `b.use_manifest_file = false` then you need to make sure to keep the gemspec.files attribute updated.
 
