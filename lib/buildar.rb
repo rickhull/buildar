@@ -70,21 +70,7 @@ class Buildar
   # now, give conf a chance to fix things up before calling self.version etc.
   #
   def gemspec
-    @gemspec ||= Gem::Specification.new do |s|
-      # Static assignments
-      s.summary     = "FIX"
-      s.description = "FIX"
-      s.authors     = ["FIX"]
-      s.email       = "FIX@FIX.COM"
-      s.homepage    = "http://FIX.COM/"
-      s.licenses    = ['FIX']
-      # s.has_rdoc    = true
-      # s.test_files  = ['FIX']
-
-      s.add_development_dependency     "rake", [">= 0"]
-      s.add_development_dependency  "buildar", ["~> 1.0"]
-    end
-    # Make sure things tracked elsewhere stay updated
+    @gemspec ||= Gem::Specification.new
     @gemspec.name = @name
     @gemspec.files = self.manifest if @use_manifest_file
     @gemspec.version = self.version if @use_version_file
