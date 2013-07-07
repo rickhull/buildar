@@ -1,8 +1,9 @@
 # Buildar is effectively a hand-rolled singleton.  Yes, a NIH miserable excuse
 # for a global.
 # Look, we want to be able to call Buildar.conf in the project rakefile, but
-# we need that data accessible here and inside lib/buildar/raketasks.
-# So we need a global.  But if we use a class-based singleton, it's namespaced.
+# we need that data accessible here and inside lib/buildar/tasks.
+# So we need a "global".
+# But if we use a class-based singleton, it's namespaced.
 # And it can't be set to nil, for example.
 #
 class Buildar
