@@ -58,9 +58,9 @@ class Buildar
   def initialize(root = nil, name = nil)
     @root = root ? File.expand_path(root) : Dir.pwd
     @name = name || File.split(@root).last
-    @use_version_file = true
+    @use_version_file = false
     @version_filename = 'VERSION'
-    @use_manifest_file = true
+    @use_manifest_file = false
     @manifest_filename = 'MANIFEST.txt'
     @use_git = true
     @publish = { rubygems: true }
