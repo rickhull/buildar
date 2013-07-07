@@ -91,12 +91,18 @@ class Buildar
     @gemspec
   end
 
+  def gemfile
+    path = File.join(@root, 'pkg', "#{@name}-#{self.available_version}.gem")
+    raise "gemfile #{path} does not exist" unless File.exists?(path)
+    path
+  end
+
   def available_version
     if @use_version_file
       self.version
     elsif !@gemspec.version
       raise "gemspec.version is false or nil"
-    elsif @gemspec.version.empty?
+    elsif @gemspec.version.to_s.empty?
       raise "gemspec.version is empty"
     else
       @gemspec.version
