@@ -111,12 +111,15 @@ end
 
 Use a VERSION file
 ------------------
-With `b.use_version_file = true` Buildar will be able to `bump_major` `bump_minor` `bump_patch` and `bump_build`.  This helps with a repeatable release process:
+Enable and configure a version file:
+```ruby
+  b.use_version_file = true
+  b.version_filename = 'VERSION'
+```
+Buildar will be able to `bump_major` `bump_minor` `bump_patch` and `bump_build`.  This helps with a repeatable release process:
 * `build` depends on `bump_build` etc.
 * `release` depends on `build` etc.
 * `release_patch` depends on `bump_patch` `release` etc.
-
-Assume `b.version_filename = 'VERSION'`
 
 To make your app or lib aware of its version via this file, simply:
 
