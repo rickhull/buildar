@@ -36,6 +36,16 @@ task :build => [:test, :bump_build] do
   Rake::Task["package"].invoke
 end
 
+task :gem_build => [:test, :bump_build] do
+  sh "gem build #{proj.gemspec_filename}"
+  target_file = "#{proj.name}-#{proj.available_version}.gem"
+  if File.exists? target_file
+    sh "mv #{target_file} pkg/#{target_file}"
+  else
+    puts "warning: expected #{target_file} but didn't find it"
+  end
+end
+
 task :install => [:build] do
   sh "gem uninstall #{proj.name}"
   sh "gem install #{proj.gemfile}"
