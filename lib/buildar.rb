@@ -8,10 +8,10 @@
 #
 class Buildar
   # Call this from the rakefile, like:
-  # Buildar.conf(__FILE__) do |b|
-  #   b.name = 'foo'
-  #   # ...
-  # end
+  #   Buildar.conf(__FILE__) do |b|
+  #     b.name = 'foo'
+  #     # ...
+  #   end
   #
   def self.conf(rakefile = nil)
     unless defined?(@@instance)
@@ -67,8 +67,7 @@ class Buildar
     @publish = { rubygems: true }
   end
 
-  # previously, we did this in initialize
-  # now, give conf a chance to fix things up before calling self.version etc.
+  # created on demand and kept up to date
   #
   def gemspec
     @gemspec ||= Gem::Specification.new
