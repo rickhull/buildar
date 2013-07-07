@@ -112,10 +112,12 @@ The VERSION file should look something like
 1.2.3.4
 ```
 
-Buildar will be able to `bump_major` `bump_minor` `bump_patch` and `bump_build`.  This helps with a repeatable release process:
-* `build` depends on `bump_build` etc.
-* `release` depends on `build` etc.
-* `release_patch` depends on `bump_patch` `release` etc.
+Buildar will be able to `bump_major` `bump_minor` `bump_patch` and `bump_build`.  This helps with a repeatable, identifiable builds: `build` depends on `bump_build` etc.
+
+Every build bumps the build number.  Since the build operates off of your potentially dirty working copy, and not some commit SHA, there is no guarantee that things haven't changed between builds, even if "nothing is supposed to have changed".  Typically you'll want to let Buildar manage the build number, and you manage the major, minor, and patch numbers with:
+* `release_major` - `bump_major`
+* `release_minor` - `bump_minor`
+* `release_patch` - `bump_patch`
 
 To make your app or lib aware of its version via this file, simply:
 
@@ -161,7 +163,7 @@ If you stick with the default `b.use_manifest_file = false` then you need to mak
 Integrate with git
 ------------------
 Enable git integration with `b.use_git = true`.  This empowers `tag` and `bump`:
-* `tag` is a `release` dependency.  It depends on `message` and `test`
+* `tag` is a `release` dependency.  It depends on `test` git tag -a $tagname -m $message
 * `bump` and friends will commit VERSION changes
 
 Publish to rubygems.org
