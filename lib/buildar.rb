@@ -52,9 +52,8 @@ class Buildar
     }.join('.')
   end
 
-  attr_accessor :root, :version_filename, :manifest_filename,
+  attr_accessor :root, :name, :version_filename, :manifest_filename,
                 :use_git, :publish, :use_manifest_file
-  attr_reader :name
 
   def initialize(root = nil, name = nil)
     @root = root ? File.expand_path(root) : Dir.pwd
@@ -81,9 +80,8 @@ class Buildar
       # s.has_rdoc    = true
       # s.test_files  = ['FIX']
 
-      s.add_development_dependency "minitest", [">= 0"]
       s.add_development_dependency     "rake", [">= 0"]
-      s.add_development_dependency  "buildar", ["> 0.4"]
+      s.add_development_dependency  "buildar", ["~> 1.0"]
     end
     # Make sure things tracked elsewhere stay updated
     @gemspec.name = @name
