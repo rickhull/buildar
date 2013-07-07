@@ -21,7 +21,7 @@ task :release_major => [:bump_major, :release]
 #
 task :message do
   unless ENV['message']
-    print "Enter a one-line message:\n> "
+    print "This task requires a message:\n> "
     ENV['message'] = $stdin.gets.chomp
   end
 end
