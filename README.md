@@ -172,17 +172,13 @@ If you stick with the default `b.use_manifest_file = false` then you need to mak
 
 Integrate with git
 ------------------
-Enable git integration with `b.use_git = true`.  This empowers:
+Enable git integration with `b.use_git = true`.  This empowers `tag` and `bump`:
 * `tag` is a `release` dependency.  It depends on `message` and `test`
 * `bump` and friends will commit VERSION changes
 
-Disabling git integration (the default) will not cause any tasks to fail.
-
 Publish to rubygems.org
 -----------------------
-Enable rubygems.org publishing with `b.publish[:rubygems] = true`.
-
-This empowers `publish`
+Enable rubygems.org publishing with `b.publish[:rubygems] = true`.  This empowers `publish`
 
 Testing it out
 --------------
