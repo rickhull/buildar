@@ -40,7 +40,9 @@ Edit your Rakefile.  Add to the top:
     require 'buildar/tasks'
 
     Buildar.conf(__FILE__) do |b|
-      # ...
+      b.name = 'Example'             # optional, inferred from directory
+	  b.gemspec.version = '1.0'      # required, unless b.use_version_file
+	  b.gemspec.files = ['Rakefile'] # required, unless b.use_manifest_file
     end
 
     # make sure you have a task named :test, even if it's empty
@@ -48,7 +50,7 @@ Edit your Rakefile.  Add to the top:
 	  # ...
     end
 
-That is actually the minimal Rakefile needed for Buildar to operate.  However, this would generate a crappy gem full of "FIX" throughout its metadata.
+That is basically the [minimal Rakefile needed for Buildar to operate](https://github.com/rickhull/buildar/blob/master/examples/minimal.rb).  However, this would generate a crappy gem full of "FIX" throughout its metadata.
 
 Dogfood
 -------
@@ -72,30 +74,6 @@ Here is Buildar's [rakefile.rb](https://github.com/rickhull/buildar/blob/master/
     end
 
 You can use it as a starting point.
-
-The default gemspec
--------------------
-    def gemspec
-      @gemspec ||= Gem::Specification.new do |s|
-        # Static assignments
-        s.summary     = "FIX"
-        s.description = "FIX"
-        s.authors     = ["FIX"]
-        s.email       = "FIX@FIX.COM"
-        s.homepage    = "http://FIX.COM/"
-        s.licenses    = ['FIX']
-        # s.has_rdoc    = true
-        # s.test_files  = ['FIX']
-
-        s.add_development_dependency     "rake", [">= 0"]
-        s.add_development_dependency  "buildar", ["~> 1.0"]
-      end
-      # Make sure things tracked elsewhere stay updated
-      @gemspec.name = @name
-      @gemspec.files = self.manifest if @use_manifest_file
-      @gemspec.version = self.version
-      @gemspec
-    end
 
 The maximal configuration
 ---------------------
