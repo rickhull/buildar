@@ -76,18 +76,18 @@ The default gemspec
 -------------------
     def gemspec
       @gemspec ||= Gem::Specification.new do |s|
-	# Static assignments
-	s.summary     = "FIX"
-	s.description = "FIX"
-	s.authors     = ["FIX"]
-	s.email       = "FIX@FIX.COM"
-	s.homepage    = "http://FIX.COM/"
-	s.licenses    = ['FIX']
-	# s.has_rdoc    = true
-	# s.test_files  = ['FIX']
+        # Static assignments
+        s.summary     = "FIX"
+        s.description = "FIX"
+        s.authors     = ["FIX"]
+        s.email       = "FIX@FIX.COM"
+        s.homepage    = "http://FIX.COM/"
+        s.licenses    = ['FIX']
+        # s.has_rdoc    = true
+        # s.test_files  = ['FIX']
 
-	s.add_development_dependency     "rake", [">= 0"]
-	s.add_development_dependency  "buildar", ["~> 1.0"]
+        s.add_development_dependency     "rake", [">= 0"]
+        s.add_development_dependency  "buildar", ["~> 1.0"]
       end
       # Make sure things tracked elsewhere stay updated
       @gemspec.name = @name
@@ -99,7 +99,7 @@ The default gemspec
 Buildar conf options
 --------------------
     attr_accessor :root, :name, :version_filename, :manifest_filename,
-		  :use_git, :publish, :use_manifest_file
+                  :use_git, :publish, :use_manifest_file
 
     def initialize(root = nil, name = nil)
       @root = root ? File.expand_path(root) : Dir.pwd
