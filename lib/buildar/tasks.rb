@@ -41,13 +41,15 @@ end
 #
 [:major, :minor, :patch, :build].each { |v|
   task "bump_#{v}" do
-    old_version = proj.version
-    new_version = Buildar.bump(v, old_version)
-    puts "bumping #{old_version} to #{new_version}"
-    proj.write_version new_version
-    if proj.use_git
-      msg = "rake bump_#{v} to #{new_version}"
-      sh "git commit #{proj.version_file} -m '#{msg}'"
+    if proj.use_version_file
+      old_version = proj.version
+      new_version = Buildar.bump(v, old_version)
+      puts "bumping #{old_version} to #{new_version}"
+      proj.write_version new_version
+      if proj.use_git
+        msg = "rake bump_#{v} to #{new_version}"
+        sh "git commit #{proj.version_file} -m '#{msg}'"
+      end
     end
   end
 }
@@ -58,7 +60,7 @@ end
 #
 task :tag => [:test] do
   if proj.use_git
-    tagname = "v#{proj.version}"
+    tagname = "v#{proj.available_version}"
     message = ENV['message'] || "auto-tagged #{tagname} by Rake"
     sh "git tag -a '#{tagname}' -m '#{message}'"
     sh "git push origin --tags"
@@ -70,7 +72,7 @@ end
 #
 task :publish => [:verify_publish_credentials] do
   if proj.publish[:rubygems]
-    fragment = "-#{proj.version}.gem"
+    fragment = "-#{proj.available_version}.gem"
     pkg_dir = File.join(proj.root, 'pkg')
     Dir.chdir(pkg_dir) {
       candidates = Dir.glob "*#{fragment}"
@@ -102,21 +104,13 @@ end
 # display project name and version
 #
 task :version do
-  puts "#{proj.name} #{proj.version}"
+  puts "#{proj.name} #{proj.available_version}"
 end
 
-# display Buildar's understanding of the files inside the gem
+# display files tracked by the gem
 #
 task :manifest do
-  if proj.use_manifest_file
-    puts proj.manifest.join("\n")
-  elsif !proj.gemspec.files
-    puts "warning: gemspec.files is false or nil"
-  elsif proj.gemspec.files.empty?
-    puts "warning: gemspec.files is empty"
-  else
-    puts proj.gemspec.files.join("\n")
-  end
+  puts proj.available_manifest.join("\n")
 end
 
 # if the user wants a bump, make it a patch
