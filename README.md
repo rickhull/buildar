@@ -1,6 +1,6 @@
 Buildar
 =======
-Buildar provides a set of rake tasks to help automate releases: versioning, packaging, and publishing ruby gems, with a set of options to help integrate with your current project.
+Buildar provides a set of rake tasks to help automate releasing your gem: versioning, packaging, and publishing.  With a set of options to help integrate with your current project.
 
 Rake tasks
 ----------
@@ -28,12 +28,7 @@ With version file integration
 * `release_minor` - `bump_minor` `release`
 * `release_major` - `bump_major` `release`
 
-Philosophy
-----------
-* The version only matters in the context of a release.  For internal development, git SHAs vastly outclass version numbers.
-* "The right version number" for the next release is a function of the current release version and the magnitude (or breakiness) of the change
-* http://semver.org/
-* Automate everything
+[Just show me the file](https://github.com/rickhull/buildar/blob/master/lib/buildar/tasks.rb)
 
 Install
 -------
@@ -101,6 +96,11 @@ You can use it as a starting point.
 
 Use a VERSION file
 ------------------
+* The version only matters in the context of a release.  For internal development, git SHAs vastly outclass version numbers.
+* "The right version number" for the next release is a function of the current release version and the magnitude (or breakiness) of the change
+* http://semver.org/
+* Automate everything
+
 Enable and configure a version file:
 ```ruby
   b.use_version_file = true
