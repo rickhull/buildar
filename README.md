@@ -47,7 +47,7 @@ Edit your Rakefile.  Add to the top:
     task :test do
     end
 
-That is actually the minimal Rakefile needed for Buildar to operate.  However, it will be a crappy gem full of "FIX" throughout its metadata.
+That is actually the minimal Rakefile needed for Buildar to operate.  However, this would generate a crappy gems full of "FIX" throughout its metadata.
 
 Dogfood
 -------
