@@ -48,11 +48,11 @@ Edit your Rakefile.  Add to the top:
 	  # ...
     end
 
-That is actually the minimal Rakefile needed for Buildar to operate.  However, this would generate a crappy gems full of "FIX" throughout its metadata.
+That is actually the minimal Rakefile needed for Buildar to operate.  However, this would generate a crappy gem full of "FIX" throughout its metadata.
 
 Dogfood
 -------
-Here is Buildar's rakefile.rb:
+Here is Buildar's [rakefile.rb](https://github.com/rickhull/buildar/blob/master/rakefile.rb):
 
     require 'buildar/tasks'
     require 'rake/testtask'
@@ -97,7 +97,7 @@ The default gemspec
       @gemspec
     end
 
-Maximal configuration
+The maximal configuration
 ---------------------
     Buildar.conf(__FILE__) do |b|
       # Buildar options
@@ -134,13 +134,17 @@ Testing it out
 
 `rake release` depends on `verify_publish_credentials` which will fail if you don't have `~/.gem/credentials`.  In that case, sign up for an account at http://rubygems.org/ and follow the instructions to get your credentials file setup.
 
-version_file
-------------
-TBD
+MANIFEST
+--------
+Track what you want included in the gem:
 
-manifest_file
--------------
-TBD
+    b.manifest_filename = 'MANIFEST'
+
+	### OR ###
+
+	b.use_manifest_file = false
+	b.gemspec.files = %w{ rakefile.rb }
+
 
 Notes
 -----
