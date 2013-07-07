@@ -39,12 +39,13 @@ Edit your Rakefile.  Add to the top:
 
     require 'buildar/tasks'
 
-    Buildar.conf(__FILE__) do { |b|
+    Buildar.conf(__FILE__) do |b|
       # ...
-    }
+    end
 
     # make sure you have a task named :test, even if it's empty
     task :test do
+	  # ...
     end
 
 That is actually the minimal Rakefile needed for Buildar to operate.  However, this would generate a crappy gems full of "FIX" throughout its metadata.
