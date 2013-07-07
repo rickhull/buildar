@@ -124,7 +124,7 @@ module Foo
   # use a method, not a constant like VERSION
   # if you use a constant, then you're doing an extra file read at requiretime
   # and that hurts production.  This method should not be called in production.
-  # It's here more for deployment and sysadmin purposes.
+  # It's here more for deployment and sysadmin purposes.  Memoize as needed.
   #
   def self.version
     vpath = File.join(File.dirname(__FILE__), '..', 'VERSION')
