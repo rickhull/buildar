@@ -111,19 +111,3 @@ Testing it out
     rake release  # build the .gem and push it rubygems.org
 
 `rake release` depends on `verify_publish_credentials` which will fail if you don't have `~/.gem/credentials`.  In that case, sign up for an account at http://rubygems.org/ and follow the instructions to get your credentials file setup.
-
-MANIFEST
---------
-Track what you want included in the gem:
-
-    b.manifest_filename = 'MANIFEST'
-
-	### OR ###
-
-	b.use_manifest_file = false
-	b.gemspec.files = %w{ rakefile.rb }
-
-
-Notes
------
-Buildar's dynamically generated gemspec relies on being able to find and read VERSION and MANIFEST.txt.  Buildar will keep your VERSION file updated, but it's up to you to make sure MANIFEST.txt is up to date.  There is intentionally no support for globs.  Just list all the files you want included in the resulting gem.
