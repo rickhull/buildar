@@ -53,11 +53,12 @@ class Buildar
   end
 
   attr_accessor :root, :name, :version_filename, :manifest_filename,
-                :use_git, :publish, :use_manifest_file
+                :use_git, :publish, :use_manifest_file, :use_version_file
 
   def initialize(root = nil, name = nil)
     @root = root ? File.expand_path(root) : Dir.pwd
     @name = name || File.split(@root).last
+    @use_version_file = true
     @version_filename = 'VERSION'
     @use_manifest_file = true
     @manifest_filename = 'MANIFEST.txt'
@@ -86,8 +87,32 @@ class Buildar
     # Make sure things tracked elsewhere stay updated
     @gemspec.name = @name
     @gemspec.files = self.manifest if @use_manifest_file
-    @gemspec.version = self.version
+    @gemspec.version = self.version if @use_version_file
     @gemspec
+  end
+
+  def available_version
+    if @use_version_file
+      self.version
+    elsif !@gemspec.version
+      raise "gemspec.version is false or nil"
+    elsif @gemspec.version.empty?
+      raise "gemspec.version is empty"
+    else
+      @gemspec.version
+    end
+  end
+
+  def available_manifest
+    if @use_manifest_file
+      self.manifest
+    elsif !@gemspec.files
+      raise "gemspec.files is false or nil"
+    elsif @gemspec.files.empty?
+      raise "gemspec.files is empty"
+    else
+      @gemspec.files
+    end
   end
 
   def version_file
