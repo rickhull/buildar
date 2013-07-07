@@ -91,7 +91,6 @@ You can use it as a starting point.
 
 The maximal configuration
 ---------------------
-
 ```ruby
 Buildar.conf(__FILE__) do |b|
   # Buildar options
@@ -110,10 +109,33 @@ Buildar.conf(__FILE__) do |b|
 end
 ```
 
+Use a VERSION file
+------------------
+If you enable `b.use_version_file` and specify `b.version_filename`, then Buildar will be able to `bump_major` `bump_minor` `bump_patch` and `bump_build`.  This helps with a repeatable release process:
+* `build` depends on `bump_build` etc.
+* `release` depends on `build` etc.
+* `release_patch` depends on `bump_patch` `release` etc.
+
+Assuming `b.version_filename = 'VERSION'`, add to your primary class or module:
+```ruby
+# e.g. lib/foo.rb
+#################
+module Foo
+  # use a method, not a constant like VERSION
+  # if you use a constant, then you're doing an extra file read at requiretime
+  # and that hurts production.  This method should not be called in production.
+  # It's here more for deployment and sysadmin purposes.
+  #
+  def self.version
+    vpath = File.join(File.dirname(__FILE__), '..', 'VERSION')
+	File.read(vpath).chomp
+  end
+end
+```
+
 Git integration
 ---------------
 Disable git integration by `b.use_git = false` if you're not interested in any of the following:
-
 * `tag` is a `release` dependency.  It depends on `message` and `test`
 * `bump` and friends will commit VERSION changes
 
