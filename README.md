@@ -37,20 +37,22 @@ Usage
 -----
 Edit your Rakefile.  Add to the top:
 
-    require 'buildar/tasks'
+```ruby
+require 'buildar/tasks'
 
-    Buildar.conf(__FILE__) do |b|
-	  b.name = 'Example'             # optional, inferred from directory
-      b.gemspec.version = '1.0'      # required, unless b.use_version_file
-	  b.gemspec.files = ['Rakefile'] # required, unless b.use_manifest_file
-	  b.gemspec.summary = 'Summary'  # required
-	  b.gemspec.author = 'Buildar'   # required
-	end
+Buildar.conf(__FILE__) do |b|
+  b.name = 'Example'             # optional, inferred from directory
+  b.gemspec.version = '1.0'      # required, unless b.use_version_file
+  b.gemspec.files = ['Rakefile'] # required, unless b.use_manifest_file
+  b.gemspec.summary = 'Summary'  # required
+  b.gemspec.author = 'Buildar'   # required
+end
 
-	# make sure you have a task named :test, even if it's empty
-	task :test do
-	  # ...
-	end
+# make sure you have a task named :test, even if it's empty
+task :test do
+  # ...
+end
+```
 
 That is basically the [minimal Rakefile needed for Buildar to operate](https://github.com/rickhull/buildar/blob/master/examples/minimal.rb).  However, this would generate a skeleton gem not worth building or publishing.
 
@@ -58,49 +60,53 @@ Dogfood
 -------
 Here is Buildar's [rakefile.rb](https://github.com/rickhull/buildar/blob/master/rakefile.rb):
 
-    require 'buildar/tasks'
-    require 'rake/testtask'
+```ruby
+require 'buildar/tasks'
+require 'rake/testtask'
 
-    Buildar.conf(__FILE__) do |b|
-	  b.use_version_file = true
-      b.version_filename = 'VERSION'
-	  b.use_manifest_file = true
-	  b.manifest_filename = 'MANIFEST.txt'
-	  b.gemspec.name = 'buildar'
-	  b.gemspec.summary = 'Buildar crept inside your rakefile and scratched upon the tasking post'
-	  b.gemspec.description = 'Buildar helps automate the release process with versioning, building, packaging, and publishing.  Optional git integration'
-	  b.gemspec.author = 'Rick Hull'
-	  b.gemspec.homepage = 'https://github.com/rickhull/buildar'
-	  b.gemspec.license = 'MIT'
-	  b.gemspec.has_rdoc = true
-      b.gemspec.add_runtime_dependency        "rake", ">= 5" # guess?
-      b.gemspec.add_development_dependency "buildar", "~> 1.0"
-	end
+Buildar.conf(__FILE__) do |b|
+  b.use_version_file = true
+  b.version_filename = 'VERSION'
+  b.use_manifest_file = true
+  b.manifest_filename = 'MANIFEST.txt'
+  b.gemspec.name = 'buildar'
+  b.gemspec.summary = 'Buildar crept inside your rakefile and scratched upon the tasking post'
+  b.gemspec.description = 'Buildar helps automate the release process with versioning, building, packaging, and publishing.  Optional git integration'
+  b.gemspec.author = 'Rick Hull'
+  b.gemspec.homepage = 'https://github.com/rickhull/buildar'
+  b.gemspec.license = 'MIT'
+  b.gemspec.has_rdoc = true
+  b.gemspec.add_runtime_dependency        "rake", ">= 5" # guess?
+  b.gemspec.add_development_dependency "buildar", "~> 1.0"
+end
 
-    Rake::TestTask.new :test do |t|
-	  t.pattern = 'test/*.rb'
-	end
+Rake::TestTask.new :test do |t|
+  t.pattern = 'test/*.rb'
+end
+```
 
 You can use it as a starting point.
 
 The maximal configuration
 ---------------------
 
-    Buildar.conf(__FILE__) do |b|
-      # Buildar options
-      b.root = '/path/to/project'
-	  b.name = 'Project'
-	  b.version_filename = 'VERSION.txt'
-	  b.use_manifest_file = true
-	  b.manifest_filename = 'MANIFEST'
-	  b.use_git = true
-	  b.publish[:rubygems] = true
+```ruby
+Buildar.conf(__FILE__) do |b|
+  # Buildar options
+  b.root = '/path/to/project'
+  b.name = 'Project'
+  b.version_filename = 'VERSION.txt'
+  b.use_manifest_file = true
+  b.manifest_filename = 'MANIFEST'
+  b.use_git = true
+  b.publish[:rubygems] = true
 
-	  # Gemspec Options
-	  b.gemspec.author = 'Yours Truly'
-	  #        ...
-	  b.gemspec.version = '2.0'
-	end
+  # Gemspec Options
+  b.gemspec.author = 'Yours Truly'
+  #        ...
+  b.gemspec.version = '2.0'
+end
+```
 
 Git integration
 ---------------
@@ -113,10 +119,13 @@ Disabling git integration will not cause any tasks to fail.
 
 Testing it out
 --------------
+
+```
     rake version  # print the version according to VERSION
     rake manifest # likewise for MANIFEST.txt
     rake bump     # bump the patch number in VERSION (1.2.3.4 -> 1.2.4.0)
     rake build    # build a .gem file in pkg/
     rake release  # build the .gem and push it rubygems.org
+```
 
 `rake release` depends on `verify_publish_credentials` which will fail if you don't have `~/.gem/credentials`.  In that case, sign up for an account at http://rubygems.org/ and follow the instructions to get your credentials file setup.
