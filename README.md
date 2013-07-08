@@ -189,7 +189,7 @@ Enable git integration with `b.use_git = true`.  This empowers `tag` and `bump`:
 
 Publish to rubygems.org
 -----------------------
-Enable rubygems.org publishing with `b.publish[:rubygems] = true`.  This empowers `publish`
+Enable `publish` to rubygems.org with `b.publish[:rubygems] = true`.
 
 Testing it out
 --------------
