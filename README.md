@@ -72,17 +72,7 @@ Buildar.conf(__FILE__) do |b|
   b.use_manifest_file = true
   b.manifest_filename = 'MANIFEST.txt'
   b.use_git           = true
-  b.publish[:rubygems] =  true
-
-  b.gemspec.summary  = 'Buildar crept inside your rakefile and scratched upon the tasking post'
-  b.gemspec.author   = 'Rick Hull'
-  b.gemspec.homepage = 'https://github.com/rickhull/buildar'
-  b.gemspec.license  = 'MIT'
-  b.gemspec.has_rdoc = true
-  b.gemspec.description = 'Buildar helps automate the release process with versioning, building, packaging, and publishing.  Optional git integration.'
-
-  b.gemspec.add_runtime_dependency        "rake", ">= 8" # guess?
-  b.gemspec.add_development_dependency "buildar", "~> 1.0"
+  b.publish[:rubygems] = true
 end
 
 Rake::TestTask.new :test do |t|
@@ -91,6 +81,35 @@ end
 ```
 
 You can use it as a starting point.  Tasks which depend on optional functionality will not fail if the option is disabled.  They are effectively skipped.
+
+Without a gemspec file
+----------------------
+```ruby
+require 'buildar/tasks'
+require 'rake/testtask'
+
+Buildar.conf(__FILE__) do |b|
+  b.name = 'example'
+  b.use_gemspec_file  = false
+  b.use_version_file  = false
+  b.use_manifest_file = false
+  b.use_git           = true
+  b.publish[:rubygems] = false
+
+  b.gemspec.summary  = 'Example of foo lorem ipsum'
+  b.gemspec.author   = 'Buildar'
+  b.gemspec.license  = 'MIT'
+  b.gemspec.description = 'Foo bar baz quux'
+
+  # since b.use_version_file = false, maintain version here
+  b.gemspec.version = 2.0
+  # since b.use_manifest_file = false, maintiain gemspec files here
+  b.gemspec.files = ['Rakefile']
+
+  b.gemspec.add_development_dependency "buildar", "~> 1.3"
+end
+```
+Someone told me this breaks bundler, so maybe just use a gemspec file, k?
 
 Use a VERSION file
 ------------------
