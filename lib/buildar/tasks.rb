@@ -39,6 +39,7 @@ end
 
 # if proj.use_gemspec_file
 # exactly equiavlent to `gem build #{proj.gemspec_filename}`
+# otherwise fall back to :gem_package
 #
 task :build => [:test, :bump_build] do
   if proj.use_gemspec_file
@@ -54,6 +55,8 @@ task :build => [:test, :bump_build] do
   end
 end
 
+# build, uninstall, install
+#
 task :install => [:build] do
   sh "gem uninstall #{proj.name}"
   sh "gem install #{proj.gemfile}"
