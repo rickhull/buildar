@@ -23,7 +23,7 @@ Use manifest file: #{proj.use_manifest_file}
  Version location: #{proj.version_location}
 Manifest location: #{proj.manifest_location}
 ----
-Buildar #{Buildar.version}
+using Buildar #{Buildar.version}
 EOF
   puts
 end
