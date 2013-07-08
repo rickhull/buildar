@@ -29,14 +29,14 @@ end
 # roughly equivalent to `gem build foo.gemspec`
 # places .gem file in pkg/
 #
-task :build => [:test, :bump_build] do
+task :package => [:test, :bump_build] do
   # definine the task at runtime, rather than requiretime
   # so that the gemspec will reflect any version bumping since requiretime
-  Gem::PackageTask.new(proj.gemspec).define
+  Gem::PackageTask.new(proj.hard_gemspec).define
   Rake::Task["package"].invoke
 end
 
-task :gem_build => [:test, :bump_build] do
+task :build => [:test, :bump_build] do
   sh "gem build #{proj.gemspec_filename}"
   target_file = "#{proj.name}-#{proj.available_version}.gem"
   if File.exists? target_file

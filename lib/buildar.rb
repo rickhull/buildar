@@ -69,77 +69,35 @@ class Buildar
 
   attr_writer :gemspec_filename
 
-  def initialize(root = nil, name = nil)
+  def initialize(root = nil)
     @root = root ? File.expand_path(root) : Dir.pwd
-    @name = name || File.split(@root).last
+    @name = File.split(@root).last
     @use_git = false
     @publish = { rubygems: false }
     @use_gemspec_file = true
-    self.gemspec_filename
     @use_version_file = false
     @version_filename = 'VERSION'
     @use_manifest_file = false
     @manifest_filename = 'MANIFEST.txt'
   end
 
-  def gemspec_filename
-    @gemspec_filename ||= "#{@name}.gemspec"
-    @gemspec_filename
+  # load every time; cache locally if you must
+  #
+  def gemspec
+    Gem::Specification.load self.gemspec_file
   end
 
   def gemspec_file
-    @gemspec_file = File.join(@root, self.gemspec_filename)
+    File.join(@root, self.gemspec_filename)
   end
 
-  def gemspec
-    @gemspec ||= self.hard_gemspec
-  end
-
-  def hard_gemspec
-    #eval(File.read(self.gemspec_file))
-    @hard_gemspec = Gem::Specification.load self.gemspec_file
-  end
-
-  def soft_gemspec
-    @soft_gemspec ||= Gem::Specification.new
-    @soft_gemspec.name = @name
-    @soft_gemspec.version = self.version if @use_version_file
-    @soft_gemspec.files = self.manifest if @use_manifest_file
-    @soft_gemspec
-  end
-
-  def gemfile
-    path = File.join(@root, 'pkg', "#{@name}-#{self.available_version}.gem")
-    raise "gemfile #{path} does not exist" unless File.exists?(path)
-    path
-  end
-
-  def available_version
-    if @use_version_file
-      self.version
-    #elsif !@gemspec.version
-    #  raise "gemspec.version is false or nil"
-    #elsif @gemspec.version.to_s.empty?
-    #  raise "gemspec.version is empty"
-    else
-      self.gemspec.version
-    end
-  end
-
-  def available_manifest
-    if @use_manifest_file
-      self.manifest
-#    elsif !@gemspec.files
-#      raise "gemspec.files is false or nil"
-#    elsif @gemspec.files.empty?
-#      raise "gemspec.files is empty"
-    else
-      self.gemspec.files
-    end
-  end
-
-  def version_file
-    File.join(@root, @version_filename)
+  # @name.gemspec is the default, but don't set this in the constructor
+  # it's common to set the name after intialization.  e.g. via Buildar.conf
+  # so set the default on first invocation.  After that, it's an accessor.
+  #
+  def gemspec_filename
+    @gemspec_filename ||= "#{@name}.gemspec"
+    @gemspec_filename
   end
 
   def version
@@ -150,11 +108,47 @@ class Buildar
     File.open(self.version_file, 'w') { |f| f.write(new_version) }
   end
 
-  def manifest_file
-    File.join(@root, @manifest_filename)
+  def version_file
+    File.join(@root, @version_filename)
+  end
+
+  def available_version
+    return self.version if @use_version_file
+    version = self.gemspec.version
+    raise "gemspec.version is missing" if !version or version.to_s.empty?
+    version
+  end
+
+  # still supported, somewhat
+  #
+  def soft_gemspec
+    @soft_gemspec ||= Gem::Specification.new
+    @soft_gemspec.name = @name
+    @soft_gemspec.version = self.version if @use_version_file
+    @soft_gemspec.files = self.manifest if @use_manifest_file
+    @soft_gemspec
+  end
+
+  # where we expect a built gem to land
+  #
+  def gemfile
+    path = File.join(@root, 'pkg', "#{@name}-#{self.available_version}.gem")
+    raise "gemfile #{path} does not exist" unless File.exists?(path)
+    path
+  end
+
+  def available_manifest
+    return self.manifest if @use_manifest_file
+    manifest = self.gemspec.files
+    raise "gemspec.files is missing" if !manifest or manifest.to_s.empty?
+    manifest
   end
 
   def manifest
     File.readlines(self.manifest_file).map { |line| line.chomp }
+  end
+
+  def manifest_file
+    File.join(@root, @manifest_filename)
   end
 end
