@@ -1,5 +1,4 @@
 require 'buildar'
-require 'rubygems/package_task'
 
 # shortcut to Buildar's data from the project rakefile
 #
@@ -33,6 +32,7 @@ end
 task :gem_package => [:test, :bump_build] do
   # definine the task at runtime, rather than requiretime
   # so that the gemspec will reflect any version bumping since requiretime
+  require 'rubygems/package_task'
   Gem::PackageTask.new(proj.gemspec).define
   Rake::Task["package"].invoke
 end
