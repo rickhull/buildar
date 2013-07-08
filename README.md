@@ -150,7 +150,7 @@ module Foo
 end
 ```
 
-If you stick with the default `b.use_version_file = false` then you need to make sure to keep the gemspec.version attribute updated.
+If you stick with the default `b.use_version_file = false` then you need to make sure to keep your gemspec's version attribute updated.
 
 Integrate with git
 ------------------
