@@ -7,6 +7,28 @@ def proj
   Buildar.instance
 end
 
+# dump environment stuff, smoketest
+#
+task :buildar do
+  puts
+  puts <<EOF
+          Project: #{proj.name} #{proj.version}
+             Root: #{proj.root}
+ Use gemspec file: #{proj.use_gemspec_file}
+ Use version file: #{proj.use_version_file}
+Use manifest file: #{proj.use_manifest_file}
+          Use git: #{proj.use_git}
+          Publish: #{proj.publish.keys}
+ Gemspec location: #{proj.gemspec_location}
+ Version location: #{proj.version_location}
+Manifest location: #{proj.manifest_location}
+----
+Buildar #{Buildar.version}
+EOF
+  puts
+end
+
+
 # the reason you're here
 #
 task :release => [:message, :build, :tag, :publish]
