@@ -57,6 +57,33 @@ end
 
 That is basically the minimal Rakefile needed for Buildar to operate, assuming you have a valid gemspec file named `Example.gemspec`.
 
+Without a gemspec file
+----------------------
+```ruby
+require 'buildar/tasks'
+require 'rake/testtask'
+
+Buildar.conf(__FILE__) do |b|
+  b.name = 'Example'
+  b.use_gemspec_file  = false
+  b.use_version_file  = false
+  b.use_git           = true
+  b.publish[:rubygems] = false
+
+  b.gemspec.summary  = 'Example of foo lorem ipsum'
+  b.gemspec.author   = 'Buildar'
+  b.gemspec.license  = 'MIT'
+  b.gemspec.description = 'Foo bar baz quux'
+  b.gemspec.files = ['Rakefile']
+
+  # since b.use_version_file = false, maintain version here
+  b.gemspec.version = 2.0
+
+  b.gemspec.add_development_dependency "buildar", "~> 1.3"
+end
+```
+Someone told me this breaks bundler, so maybe just use a gemspec file, k?
+
 Dogfood
 -------
 Here is Buildar's [rakefile.rb](https://github.com/rickhull/buildar/blob/master/rakefile.rb):
@@ -79,35 +106,6 @@ end
 ```
 
 You can use it as a starting point.  Tasks which depend on optional functionality will not fail if the option is disabled.  They are effectively skipped.
-
-Without a gemspec file
-----------------------
-```ruby
-require 'buildar/tasks'
-require 'rake/testtask'
-
-Buildar.conf(__FILE__) do |b|
-  b.name = 'example'
-  b.use_gemspec_file  = false
-  b.use_version_file  = false
-  b.use_manifest_file = false
-  b.use_git           = true
-  b.publish[:rubygems] = false
-
-  b.gemspec.summary  = 'Example of foo lorem ipsum'
-  b.gemspec.author   = 'Buildar'
-  b.gemspec.license  = 'MIT'
-  b.gemspec.description = 'Foo bar baz quux'
-
-  # since b.use_version_file = false, maintain version here
-  b.gemspec.version = 2.0
-  # since b.use_manifest_file = false, maintiain gemspec files here
-  b.gemspec.files = ['Rakefile']
-
-  b.gemspec.add_development_dependency "buildar", "~> 1.3"
-end
-```
-Someone told me this breaks bundler, so maybe just use a gemspec file, k?
 
 Use a VERSION file
 ------------------
@@ -154,27 +152,6 @@ end
 
 If you stick with the default `b.use_version_file = false` then you need to make sure to keep the gemspec.version attribute updated.
 
-Use a MANIFEST.txt file
------------------------
-It can be useful to track your project's files outside of your gemspec.  When enabled, Buildar will inject the contents of this file into your gemspec.files.
-```ruby
-  b.use_manifest_file
-  b.manifest_filename = 'MANIFEST.txt'
-```
-
-Here is Buildar's [MANIFEST.txt](https://github.com/rickhull/buildar/blob/master/MANIFEST.txt)
-
-    MANIFEST.txt
-	VERSION
-	rakefile.rb
-	lib/buildar.rb
-	lib/buildar/tasks.rb
-
-
-You need to make sure this file stays up to date.  Buildar just reads it.
-
-If you stick with the default `b.use_manifest_file = false` then you need to make sure to keep the gemspec.files attribute updated.
-
 Integrate with git
 ------------------
 Enable git integration with `b.use_git = true`.  This empowers `tag` and `bump`:
@@ -188,10 +165,10 @@ Enable rubygems.org publishing with `b.publish[:rubygems] = true`.  This empower
 Testing it out
 --------------
 ```shell
-rake version  # print the version according to VERSION
-rake manifest # likewise for MANIFEST.txt
-rake bump     # bump the patch number in VERSION (1.2.3.4 -> 1.2.4.0)
+rake buildar  # print Buildar's config
+rake version  # print the Buildar's understanding of the version
 rake build    # build a .gem file in pkg/
+rake install  # build, uninstall, install
 rake release  # build the .gem and push it rubygems.org
 ```
 
