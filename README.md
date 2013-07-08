@@ -55,7 +55,7 @@ task :test do
 end
 ```
 
-That is basically the minimal Rakefile needed for Buildar to operate, assuming you have a valid gemspec file named `Example.gemspec`.  If you don't have a gemspec file or you'd rather maintain it inside your Rakefile, here is the [minimal Rakefile needed for Buildar to operate](https://github.com/rickhull/buildar/blob/master/examples/minimal.rb).  However, this would generate a skeleton gem not worth building or publishing.
+That is basically the minimal Rakefile needed for Buildar to operate, assuming you have a valid gemspec file named `Example.gemspec`.
 
 Dogfood
 -------
@@ -69,8 +69,6 @@ Buildar.conf(__FILE__) do |b|
   b.name = 'buildar'
   b.use_version_file  = true
   b.version_filename  = 'VERSION'
-  b.use_manifest_file = true
-  b.manifest_filename = 'MANIFEST.txt'
   b.use_git           = true
   b.publish[:rubygems] = true
 end
