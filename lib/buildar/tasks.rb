@@ -131,11 +131,11 @@ task :buildar do
           Project: #{proj.name} #{proj.version}
              Root: #{proj.root}
  Use gemspec file: #{proj.use_gemspec_file}
+   Gemspec source: #{proj.gemspec_location}
  Use version file: #{proj.use_version_file}
+   Version source: #{proj.version_location}
           Use git: #{proj.use_git}
           Publish: #{proj.publish.keys}
-   Gemspec source: #{proj.gemspec_location}
-   Version source: #{proj.version_location}
 # using Buildar #{Buildar.version}
 EOF
   puts
