@@ -28,9 +28,9 @@ With version file integration
 * `release_minor` - `bump_minor` `release`
 * `release_major` - `bump_major` `release`
 
-[Just show me the file](https://github.com/rickhull/buildar/blob/master/lib/buildar/tasks.rb)
-
 Tasks which depend on optional functionality will not fail if the option is disabled.  They are effectively skipped.
+
+[Just show me the file](https://github.com/rickhull/buildar/blob/master/lib/buildar/tasks.rb)
 
 Install
 -------
