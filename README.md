@@ -150,8 +150,8 @@ module Foo
   # It's here more for deployment and sysadmin purposes.  Memoize as needed.
   #
   def self.version
-    vpath = File.join(File.dirname(__FILE__), '..', 'VERSION')
-	File.read(vpath).chomp
+    file = File.expand_path('../../VERSION', __FILE__)
+	File.read(file).chomp
   end
 end
 ```
