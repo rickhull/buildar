@@ -81,9 +81,21 @@ class Buildar
     @manifest_filename = 'MANIFEST.txt'
   end
 
+  def gemspec
+    @use_gemspec_file ? self.hard_gemspec : self.soft_gemspec
+  end
+
+  def soft_gemspec
+    @soft_gemspec ||= Gem::Specification.new
+    @soft_gemspec.name = @name
+    @soft_gemspec.version = self.version if @use_version_file
+    @soft_gemspec.files = self.manifest if @use_manifest_file
+    @soft_gemspec
+  end
+
   # load every time; cache locally if you must
   #
-  def gemspec
+  def hard_gemspec
     Gem::Specification.load self.gemspec_file
   end
 
@@ -117,16 +129,6 @@ class Buildar
     version = self.gemspec.version
     raise "gemspec.version is missing" if !version or version.to_s.empty?
     version
-  end
-
-  # still supported, somewhat
-  #
-  def soft_gemspec
-    @soft_gemspec ||= Gem::Specification.new
-    @soft_gemspec.name = @name
-    @soft_gemspec.version = self.version if @use_version_file
-    @soft_gemspec.files = self.manifest if @use_manifest_file
-    @soft_gemspec
   end
 
   # where we expect a built gem to land
