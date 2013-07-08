@@ -9,7 +9,6 @@ Gem::Specification.new do |s|
   s.description = 'Buildar helps automate the release process with versioning, building, packaging, and publishing.  Optional git integration.'
 
   s.add_runtime_dependency        "rake", ">= 8" # guess?
-  s.add_development_dependency "buildar", "~> 1.0"
 
   # dynamic setup
   this_dir = File.expand_path('..', __FILE__)
