@@ -32,7 +32,7 @@ end
 task :package => [:test, :bump_build] do
   # definine the task at runtime, rather than requiretime
   # so that the gemspec will reflect any version bumping since requiretime
-  Gem::PackageTask.new(proj.hard_gemspec).define
+  Gem::PackageTask.new(proj.gemspec).define
   Rake::Task["package"].invoke
 end
 
