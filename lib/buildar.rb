@@ -23,8 +23,8 @@ class Buildar
   #
   def self.conf(rakefile = nil)
     unless defined?(@@instance)
-      args = rakefile ? [File.dirname(rakefile)] : []
-      @@instance = Buildar.new(*args)
+      root = rakefile ? File.expand_path('..', rakefile) : nil
+      @@instance = Buildar.new root
     end
     yield @@instance if block_given?
   end
