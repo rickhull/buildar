@@ -12,7 +12,7 @@ class Buildar
   end
 
   def self.version
-    File.read(File.join(dir(__FILE__), 'VERSION')).chomp
+    File.read(File.join(dir(__FILE__), '..', 'VERSION')).chomp
   end
 
   # Call this from the rakefile, like:
@@ -112,6 +112,10 @@ class Buildar
     @gemspec_filename
   end
 
+  def gemspec_location
+    @use_gemspec_file ? self.gemspec_filename : 'Rakefile'
+  end
+
   def version
     File.read(self.version_file).chomp
   end
@@ -129,6 +133,10 @@ class Buildar
     version = self.gemspec.version
     raise "gemspec.version is missing" if !version or version.to_s.empty?
     version
+  end
+
+  def version_location
+    @use_version_file ? self.version_filename : self.gemspec_filename
   end
 
   # where we expect a built gem to land
@@ -152,5 +160,9 @@ class Buildar
 
   def manifest_file
     File.join(@root, @manifest_filename)
+  end
+
+  def manifest_location
+    @use_manifest_file ? self.manifest_filename : self.gemspec_filename
   end
 end
