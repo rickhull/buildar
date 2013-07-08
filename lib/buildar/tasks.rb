@@ -7,25 +7,6 @@ def proj
   Buildar.instance
 end
 
-# dump environment stuff, smoketest
-#
-task :buildar do
-  puts
-  puts <<EOF
-          Project: #{proj.name} #{proj.version}
-             Root: #{proj.root}
- Use gemspec file: #{proj.use_gemspec_file}
- Use version file: #{proj.use_version_file}
-          Use git: #{proj.use_git}
-          Publish: #{proj.publish.keys}
-   Gemspec source: #{proj.gemspec_location}
-   Version source: #{proj.version_location}
-# using Buildar #{Buildar.version}
-EOF
-  puts
-end
-
-
 # the reason you're here
 #
 task :release => [:message, :build, :tag, :publish]
@@ -45,16 +26,20 @@ task :message do
   end
 end
 
+# uses Gem::PackageTask to build via Gem API
 # roughly equivalent to `gem build foo.gemspec`
-# places .gem file in pkg/
+# operates with a hard or soft gemspec
 #
-task :package => [:test, :bump_build] do
+task :gem_package => [:test, :bump_build] do
   # definine the task at runtime, rather than requiretime
   # so that the gemspec will reflect any version bumping since requiretime
   Gem::PackageTask.new(proj.gemspec).define
   Rake::Task["package"].invoke
 end
 
+# if proj.use_gemspec_file
+# exactly equiavlent to `gem build #{proj.gemspec_filename}`
+#
 task :build => [:test, :bump_build] do
   if proj.use_gemspec_file
     sh "gem build #{proj.gemspec_filename}"
@@ -65,7 +50,7 @@ task :build => [:test, :bump_build] do
       puts "warning: expected #{target_file} but didn't find it"
     end
   else
-    puts "warning: cannot build without use_gemspec_file; try package"
+    Rake::Task[:gem_package].invoke
   end
 end
 
@@ -131,6 +116,24 @@ task :version do
   puts "#{proj.name} #{proj.available_version}"
 end
 
-# if the user wants a bump, make it a patch
+# if the user wants a bump, make it a patch; not used internally
 #
 task :bump => [:bump_patch]
+
+# config check
+#
+task :buildar do
+  puts
+  puts <<EOF
+          Project: #{proj.name} #{proj.version}
+             Root: #{proj.root}
+ Use gemspec file: #{proj.use_gemspec_file}
+ Use version file: #{proj.use_version_file}
+          Use git: #{proj.use_git}
+          Publish: #{proj.publish.keys}
+   Gemspec source: #{proj.gemspec_location}
+   Version source: #{proj.version_location}
+# using Buildar #{Buildar.version}
+EOF
+  puts
+end
