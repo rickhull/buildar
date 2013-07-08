@@ -20,8 +20,7 @@ task :buildar do
           Publish: #{proj.publish.keys}
    Gemspec source: #{proj.gemspec_location}
    Version source: #{proj.version_location}
-----
-using Buildar #{Buildar.version}
+# using Buildar #{Buildar.version}
 EOF
   puts
 end
