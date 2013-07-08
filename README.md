@@ -109,6 +109,7 @@ You can use it as a starting point.  Tasks which depend on optional functionalit
 
 Use a VERSION file
 ------------------
+* Buildar can manage your version numbers with `b.use_version_file = true`
 * The version only matters in the context of a release.  For internal development, git SHAs vastly outclass version numbers.
 * "The right version number" for the next release is a function of the current release version and the magnitude (or breakiness) of the change
 * http://semver.org/
