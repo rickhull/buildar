@@ -7,12 +7,9 @@
 # And it can't be set to nil, for example.
 #
 class Buildar
-  def self.dir(file)
-    File.expand_path('..', file)
-  end
-
   def self.version
-    File.read(File.join(dir(__FILE__), '..', 'VERSION')).chomp
+    file = File.expand_path('../../VERSION', __FILE__)
+    File.read(file).chomp
   end
 
   # Call this from the rakefile, like:
