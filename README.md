@@ -11,7 +11,6 @@ Core
 * `message` - capture a message from ENV['message'] or prompt STDIN
 * `install` - `build` uninstall, install built .gem
 * `version` - show the current project version
-* `manifest` - show the files tracked by the gem
 * `buildar` - config check
 
 With rubygems.org integration
