@@ -19,7 +19,7 @@ task :release_major => [:bump_major, :release]
 # make sure ENV['message'] is populated
 #
 task :message do
-  unless ENV['message']
+  if !ENV['message'] or ENV['message'].empty?
     print "This task requires a message:\n> "
     ENV['message'] = $stdin.gets.chomp
   end
