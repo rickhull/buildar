@@ -62,7 +62,6 @@ Without a gemspec file
 ----------------------
 ```ruby
 require 'buildar/tasks'
-require 'rake/testtask'
 
 Buildar.conf(__FILE__) do |b|
   b.name = 'Example'
