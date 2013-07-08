@@ -16,12 +16,10 @@ task :buildar do
              Root: #{proj.root}
  Use gemspec file: #{proj.use_gemspec_file}
  Use version file: #{proj.use_version_file}
-Use manifest file: #{proj.use_manifest_file}
           Use git: #{proj.use_git}
           Publish: #{proj.publish.keys}
  Gemspec location: #{proj.gemspec_location}
  Version location: #{proj.version_location}
-Manifest location: #{proj.manifest_location}
 ----
 using Buildar #{Buildar.version}
 EOF
@@ -132,12 +130,6 @@ end
 #
 task :version do
   puts "#{proj.name} #{proj.available_version}"
-end
-
-# display files tracked by the gem
-#
-task :manifest do
-  puts proj.available_manifest.join("\n")
 end
 
 # if the user wants a bump, make it a patch

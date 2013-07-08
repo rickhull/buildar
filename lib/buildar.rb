@@ -65,7 +65,6 @@ class Buildar
                 :use_git, :publish,
                 :use_gemspec_file, :gemspec_filename,
                 :use_version_file, :version_filename,
-                :use_manifest_file, :manifest_filename
 
   attr_writer :gemspec_filename
 
@@ -77,8 +76,6 @@ class Buildar
     @use_gemspec_file = true
     @use_version_file = false
     @version_filename = 'VERSION'
-    @use_manifest_file = false
-    @manifest_filename = 'MANIFEST.txt'
   end
 
   def gemspec
@@ -89,7 +86,6 @@ class Buildar
     @soft_gemspec ||= Gem::Specification.new
     @soft_gemspec.name = @name
     @soft_gemspec.version = self.version if @use_version_file
-    @soft_gemspec.files = self.manifest if @use_manifest_file
     @soft_gemspec
   end
 
@@ -145,24 +141,5 @@ class Buildar
     path = File.join(@root, 'pkg', "#{@name}-#{self.available_version}.gem")
     raise "gemfile #{path} does not exist" unless File.exists?(path)
     path
-  end
-
-  def available_manifest
-    return self.manifest if @use_manifest_file
-    manifest = self.gemspec.files
-    raise "gemspec.files is missing" if !manifest or manifest.to_s.empty?
-    manifest
-  end
-
-  def manifest
-    File.readlines(self.manifest_file).map { |line| line.chomp }
-  end
-
-  def manifest_file
-    File.join(@root, @manifest_filename)
-  end
-
-  def manifest_location
-    @use_manifest_file ? self.manifest_filename : self.gemspec_filename
   end
 end
