@@ -66,13 +66,11 @@ That is basically the minimal Rakefile needed for Buildar to operate, assuming y
 Without a gemspec file
 ----------------------
 ```ruby
-require 'buildar/tasks'
-
 Buildar.conf(__FILE__) do |b|
   b.name = 'Example'
-  b.use_gemspec_file  = false
-  b.use_version_file  = false
-  b.use_git           = true
+  b.use_gemspec_file = false
+  b.use_version_file = false
+  b.use_git = false
   b.publish[:rubygems] = false
 
   b.gemspec.summary  = 'Example of foo lorem ipsum'
@@ -80,13 +78,11 @@ Buildar.conf(__FILE__) do |b|
   b.gemspec.license  = 'MIT'
   b.gemspec.description = 'Foo bar baz quux'
   b.gemspec.files = ['Rakefile']
-
-  # since b.use_version_file = false, maintain version here
   b.gemspec.version = 2.0
-
-  b.gemspec.add_development_dependency "buildar", "~> 1.3"
 end
 ```
+From [examples/no_gemspec_file.rb](https://github.com/rickhull/buildar/blob/master/examples/no_gemspec_file.rb)
+
 Someone told me this breaks [Bundler](https://github.com/bundler/bundler), so maybe just use a gemspec file, k?
 
 Dogfood
