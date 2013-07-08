@@ -165,7 +165,7 @@ Enable rubygems.org publishing with `b.publish[:rubygems] = true`.  This empower
 Testing it out
 --------------
 ```shell
-rake buildar  # print Buildar's config
+rake buildar  # print Buildar's config / smoketest
 rake version  # print the Buildar's understanding of the version
 rake build    # build a .gem file in pkg/
 rake install  # build, uninstall, install
