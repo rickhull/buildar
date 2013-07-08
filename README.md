@@ -12,6 +12,7 @@ Core
 * `install` - `build` uninstall, install built .gem
 * `version` - show the current project version
 * `manifest` - show the files tracked by the gem
+* `buildar` - config check
 
 With rubygems.org integration
 * `publish` - `verify publish credentials` gem push
@@ -45,10 +46,7 @@ require 'buildar/tasks'
 
 Buildar.conf(__FILE__) do |b|
   b.name = 'Example'             # optional, inferred from directory
-  b.gemspec.version = '1.0'      # required, unless b.use_version_file
-  b.gemspec.files = ['Rakefile'] # required, unless b.use_manifest_file
-  b.gemspec.summary = 'Summary'  # required
-  b.gemspec.author = 'Buildar'   # required
+  # ...
 end
 
 # make sure you have a task named :test, even if it's empty
@@ -57,7 +55,7 @@ task :test do
 end
 ```
 
-That is basically the [minimal Rakefile needed for Buildar to operate](https://github.com/rickhull/buildar/blob/master/examples/minimal.rb).  However, this would generate a skeleton gem not worth building or publishing.
+That is basically the minimal Rakefile needed for Buildar to operate, assuming you have a valid gemspec file at Example.gemspec.  If you don't have a gemspec file or you'd rather maintain it inside your Rakefile, here is the [minimal Rakefile needed for Buildar to operate](https://github.com/rickhull/buildar/blob/master/examples/minimal.rb).  However, this would generate a skeleton gem not worth building or publishing.
 
 Dogfood
 -------
