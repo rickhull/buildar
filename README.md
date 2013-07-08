@@ -1,6 +1,11 @@
 Buildar
 =======
-Buildar provides a set of rake tasks to help automate releasing your gem: versioning, packaging, and publishing.  With a set of options to help integrate with your current project.
+Buildar provides a set of rake tasks to help automate releasing your gem:
+* Versioning
+* Building / Packaging
+* Publishing
+
+With a set of options to integrate with your current project.
 
 Rake tasks
 ----------
