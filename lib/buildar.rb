@@ -64,7 +64,7 @@ class Buildar
   attr_accessor :root, :name,
                 :use_git, :publish,
                 :use_gemspec_file, :gemspec_filename,
-                :use_version_file, :version_filename,
+                :use_version_file, :version_filename
 
   attr_writer :gemspec_filename
 

@@ -18,8 +18,8 @@ task :buildar do
  Use version file: #{proj.use_version_file}
           Use git: #{proj.use_git}
           Publish: #{proj.publish.keys}
- Gemspec location: #{proj.gemspec_location}
- Version location: #{proj.version_location}
+   Gemspec source: #{proj.gemspec_location}
+   Version source: #{proj.version_location}
 ----
 using Buildar #{Buildar.version}
 EOF
