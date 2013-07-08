@@ -81,7 +81,7 @@ Buildar.conf(__FILE__) do |b|
   b.gemspec.add_development_dependency "buildar", "~> 1.3"
 end
 ```
-Someone told me this breaks bundler, so maybe just use a gemspec file, k?
+Someone told me this breaks [bundler](https://github.com/bundler/bundler), so maybe just use a gemspec file, k?
 
 Dogfood
 -------
