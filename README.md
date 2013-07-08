@@ -155,7 +155,7 @@ If you stick with the default `b.use_version_file = false` then you need to make
 
 Gemspec file tricks
 -------------------
-I like to let Buildar manage my [VERSION](https://github.com/rickhull/buildar/blob/master/VERSION) file, and also like to maintiain my [MANIFEST.txt](https://github.com/rickhull/buildar/blob/master/MANIFEST.txt) -- the canonical list of files belonging to the project -- outside of [buildar.gemspec](https://github.com/rickhull/buildar/blob/master/buildar.gemspec).
+I like to let Buildar manage my [VERSION](https://github.com/rickhull/buildar/blob/master/VERSION) file, and I also like to maintain my [MANIFEST.txt](https://github.com/rickhull/buildar/blob/master/MANIFEST.txt) -- the canonical list of files belonging to the project -- outside of [buildar.gemspec](https://github.com/rickhull/buildar/blob/master/buildar.gemspec).
 
 With
 ```ruby
