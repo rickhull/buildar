@@ -92,7 +92,7 @@ Rake::TestTask.new :test do |t|
 end
 ```
 
-You can use it as a starting point.
+You can use it as a starting point.  Tasks which depend on optional functionality will not fail if the option is disabled.  They are effectively skipped.
 
 Use a VERSION file
 ------------------
