@@ -12,7 +12,7 @@ Gem::Specification.new do |s|
   s.add_development_dependency "buildar", "~> 1.0"
 
   # dynamic setup
-  this_dir = File.dirname(File.expand_path(__FILE__))
+  this_dir = File.expand_path('..', __FILE__)
   version_file = File.join(this_dir, 'VERSION')
   manifest_file = File.join(this_dir, 'MANIFEST.txt')
 

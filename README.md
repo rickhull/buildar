@@ -152,6 +152,32 @@ end
 
 If you stick with the default `b.use_version_file = false` then you need to make sure to keep your gemspec's version attribute updated.
 
+Gemspec file tricks
+-------------------
+I like to let Buildar manage my VERSION file, and also like to maintiain my manifest -- the canonical list of files belonging to the project -- outside of the gemspec file.
+
+With
+```ruby
+  b.use_gemspec_file = true
+  b.use_version_file = true
+```
+
+You'll need to keep your gemspec file in synch with the version_file.  Here's [how Buildar does it](https://github.com/rickhull/buildar/blob/master/buildar.gemspec):
+```ruby
+# Gem::Specification.new do |s|
+  # ...
+  # dynamic setup
+  this_dir = File.expand_path('..', __FILE__)
+  version_file = File.join(this_dir, 'VERSION')
+  manifest_file = File.join(this_dir, 'MANIFEST.txt')
+
+  # dynamic assignments
+  s.version  = File.read(version_file).chomp
+  s.files = File.readlines(manifest_file).map { |f| f.chomp }
+```
+
+Note, this also shows how to maintain a MANIFEST.txt file outside of your gemspec file.
+
 Integrate with git
 ------------------
 Enable git integration with `b.use_git = true`.  This empowers `tag` and `bump`:
