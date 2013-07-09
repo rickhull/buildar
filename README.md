@@ -179,8 +179,6 @@ You'll need to keep your gemspec file in synch with the version_file.  Here's [h
   s.files = File.readlines(manifest_file).map { |f| f.chomp }
 ```
 
-Note, this also shows how to maintain a MANIFEST.txt file outside of your gemspec file.
-
 Integrate with git
 ------------------
 Enable git integration with `b.use_git = true`.  This empowers `tag` and `bump`:
