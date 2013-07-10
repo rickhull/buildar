@@ -88,7 +88,6 @@ task :tag => [:test] do
   if proj.use_git
     tagname = "v#{proj.available_version}"
     message = ENV['message'] || "auto-tagged #{tagname} by Rake"
-    message.gsub!("'", "\'")
     sh %Q{git tag -a "#{tagname}" -m "#{message}"}
     sh "git push origin --tags"
   end
