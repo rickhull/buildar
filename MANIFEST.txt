@@ -4,4 +4,3 @@ VERSION
 README.md
 rakefile.rb
 lib/buildar.rb
-lib/buildar/tasks.rb

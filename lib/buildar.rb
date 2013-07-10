@@ -1,38 +1,11 @@
-# Buildar is effectively a hand-rolled singleton.  Yes, a NIH miserable excuse
-# for a global.
-# Look, we want to be able to call Buildar.conf in the project rakefile, but
-# we need that data accessible here and inside lib/buildar/tasks.
-# So we need a "global".
-# But if we use a class-based singleton, it's namespaced.
-# And it can't be set to nil, for example.
-#
-class Buildar
+require 'rake'
+require 'rake/clean'
+require 'rake/tasklib'
+
+class Buildar < Rake::TaskLib
   def self.version
     file = File.expand_path('../../VERSION', __FILE__)
     File.read(file).chomp
-  end
-
-  # Call this from the rakefile, like:
-  #   Buildar.conf(__FILE__) do |b|
-  #     b.name = 'foo'
-  #     # ...
-  #   end
-  #
-  def self.conf(rakefile = nil)
-    unless defined?(@@instance)
-      root = rakefile ? File.expand_path('..', rakefile) : nil
-      @@instance = Buildar.new root
-    end
-    yield @@instance if block_given?
-  end
-
-  # Confirming singleton.
-  # Only buildar/raketasks should need to call this
-  # Use conf inside project/Rakefile
-  #
-  def self.instance
-    raise "no instance; call Buildar.conf" unless defined?(@@instance)
-    @@instance
   end
 
   # e.g. bump(:minor, '1.2.3') #=> '1.3.0'
@@ -58,85 +31,163 @@ class Buildar
     }.join('.')
   end
 
-  attr_accessor :root, :name,
-                :use_git, :publish,
-                :use_gemspec_file, :gemspec_filename,
-                :use_version_file, :version_filename
+  attr_accessor :gemspec_file, :version_file, :use_git, :pkg_dir
 
-  attr_writer :gemspec_filename
-
-  def initialize(root = nil)
-    @root = root ? File.expand_path(root) : Dir.pwd
-    @name = File.split(@root).last
+  def initialize
+    @gemspec_file = nil
+    @version_file = nil
     @use_git = false
-    @publish = { rubygems: false }
-    @use_gemspec_file = true
-    @use_version_file = false
-    @version_filename = 'VERSION'
+    @pkg_dir = 'pkg'
+
+    yield self if block_given?
+
+    define_tasks
   end
 
   def gemspec
-    @use_gemspec_file ? self.hard_gemspec : self.soft_gemspec
+    if @gemspec_file
+      Gem::Specification.load @gemspec_file
+    else
+      @gemspec ||= Gem::Specification.new
+      @gemspec.version = self.version if @version_file
+      @gemspec
+    end
   end
 
-  def soft_gemspec
-    @soft_gemspec ||= Gem::Specification.new
-    @soft_gemspec.name = @name
-    @soft_gemspec.version = self.version if @use_version_file
-    @soft_gemspec
+  def read_version
+    raise "no @version_file" unless @version_file
+    File.read(@version_file).chomp
   end
 
-  # load every time; cache locally if you must
-  #
-  def hard_gemspec
-    Gem::Specification.load self.gemspec_file
+  def write_version(new_version)
+    raise "no @version_file" unless @version_file
+    File.open(@version_file, 'w') { |f| f.write(new_version) }
   end
 
-  def gemspec_file
-    File.join(@root, self.gemspec_filename)
+  def gem_file
+    File.join(@pkg_dir, "#{gemspec.name}-#{gemspec.version}.gem")
   end
 
-  # @name.gemspec is the default, but don't set this in the constructor
-  # it's common to set the name after intialization.  e.g. via Buildar.conf
-  # so set the default on first invocation.  After that, it's an accessor.
-  #
-  def gemspec_filename
-    @gemspec_filename ||= "#{@name}.gemspec"
-    @gemspec_filename
-  end
+  def define_tasks
+    directory @pkg_dir
+    CLOBBER.include @pkg_dir
 
-  def gemspec_location
-    @use_gemspec_file ? self.gemspec_filename : 'Rakefile'
-  end
+    desc "invoke :test and :bump conditionally"
+    task :pre_build do
+      Rake::Task[:test].invoke if Rake::Task.task_defined? :test
+      Rake::Task[:bump_build].invoke if @version_file
+    end
 
-  def version
-    File.read(self.version_file).chomp
-  end
+    # can't make this a file task, because the version could be bumped
+    # as a dependency, changing the target file
+    #
+    desc "build a .gem in #{@pkg_dir}/ using `gem build`"
+    task :build => [:pre_build] do
+      if @gemspec_file
+        sh "gem build #{@gemspec_file}"
+        mv File.basename(self.gem_file), self.gem_file
+      else
+        Rake::Task[:gem_package].invoke
+      end
+    end
 
-  def write_version new_version
-    File.open(self.version_file, 'w') { |f| f.write(new_version) }
-  end
+    # roughly equivalent to `gem build self.gemspec`
+    # operates with a hard or soft gemspec
+    #
+    desc "build a .gem in #{@pkg_dir}/ using Gem::PackageTask"
+    task :gem_package => [:pre_build] do
+      # definine the task at runtime, rather than requiretime
+      # so that the gemspec will reflect any version bumping since requiretime
+      require 'rubygems/package_task'
+      Gem::PackageTask.new(self.gemspec).define
+      Rake::Task["package"].invoke
+    end
 
-  def version_file
-    File.join(@root, @version_filename)
-  end
+    desc "used internally; make sure we have .gem for the current version"
+    task :built do
+      Rake::Task[:build].invoke unless File.exists? self.gem_file
+    end
 
-  def available_version
-    return self.version if @use_version_file
-    version = self.gemspec.version
-    raise "gemspec.version is missing" if !version or version.to_s.empty?
-    version
-  end
+    desc "publish the current version"
+    task :publish => [:built] do
+      sh "gem push #{self.gem_file}"
+    end
 
-  def version_location
-    @use_version_file ? self.version_filename : self.gemspec_filename
-  end
+    desc "publish a new version; tag conditionally"
+    task :release => [:build, :publish] do
+      Rake::Task[:tag].invoke if @use_git
+    end
 
-  # where we expect a built gem to land
-  #
-  def gemfile
-    path = File.join(@root, 'pkg', "#{@name}-#{self.available_version}.gem")
-    raise "gemfile #{path} does not exist" unless File.exists?(path)
-    path
+    desc "install the current version"
+    task :install => [:built] do
+      sh "gem install #{self.gem_file}"
+    end
+
+    desc "build a new version and install"
+    task :install_new => [:build, :install]
+
+    # tasks :bump_major, :bump_minor, :bump_patch, :bump_build
+    # commit the version file if @use_git
+    #
+    if @version_file
+      [:major, :minor, :patch, :build].each { |v|
+        desc "increment the #{v} number in #{@version_file}"
+        task "bump_#{v}" do
+          old_version = self.read_version
+          new_version = self.class.bump(v, old_version)
+
+          puts "bumping #{old_version} to #{new_version}"
+          self.write_version new_version
+
+          if @use_git
+            msg = "rake bump_#{v} to #{new_version}"
+            sh "git commit #{@version_file} -m #{msg.inspect}"
+          end
+        end
+
+        unless v == :build
+          desc "increment the #{v} number and release"
+          task "release_#{v}" => ["bump_#{v}", :release]
+        end
+      }
+    end
+
+    # if proj.use_git
+    # create annotated git tag based on VERSION and ENV['message'] if available
+    # push tags to origin
+    #
+    if @use_git
+      desc "annotated git tag with name (version) and message"
+      task :tag => [:message] do
+        Rake::Task[:test].invoke if Rake::Task.defined? :test
+        tagname = "v#{self.gemspec.version}"
+        message = ENV['message'] || "auto-tagged #{tagname} by Rake"
+        sh "git tag -a #{tagname.inspect} -m #{message.inspect}"
+        sh "git push origin --tags"
+      end
+    end
+
+    desc "used internally; make sure ENV['message'] is populated"
+    task :message do
+      if !ENV['message'] or ENV['message'].empty?
+        print "This task requires a message:\n> "
+        ENV['message'] = $stdin.gets.chomp
+      end
+    end
+
+    desc "config check"
+    task :buildar do
+      gemspec = self.gemspec
+      puts
+      puts <<EOF
+     Project: #{gemspec.name} #{gemspec.version}
+Gemspec file: #{@gemspec_file}
+Version file: #{@version_file}
+     Use git: #{@use_git}
+       Files: #{gemspec.files.join("\n              ")}
+# using Buildar #{Buildar.version}
+EOF
+      puts
+    end
   end
 end
