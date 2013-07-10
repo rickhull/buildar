@@ -31,17 +31,19 @@ class Buildar < Rake::TaskLib
     }.join('.')
   end
 
-  attr_accessor :gemspec_file, :version_file, :use_git, :pkg_dir
+  attr_accessor :gemspec_file, :version_file, :use_git, :pkg_dir, :ns
 
   def initialize
     @gemspec_file = nil
     @version_file = nil
     @use_git = false
     @pkg_dir = 'pkg'
+    @ns = ''
 
-    yield self if block_given?
-
-    define_tasks
+    if block_given?
+      yield self
+      define
+    end
   end
 
   def gemspec
@@ -49,7 +51,7 @@ class Buildar < Rake::TaskLib
       Gem::Specification.load @gemspec_file
     else
       @gemspec ||= Gem::Specification.new
-      @gemspec.version = self.version if @version_file
+      @gemspec.version = self.read_version if @version_file
       @gemspec
     end
   end
@@ -68,21 +70,79 @@ class Buildar < Rake::TaskLib
     File.join(@pkg_dir, "#{gemspec.name}-#{gemspec.version}.gem")
   end
 
-  def define_tasks
+  def define
     directory @pkg_dir
     CLOBBER.include @pkg_dir
 
-    desc "invoke :test and :bump conditionally"
+    if @ns and !@ns.empty?
+      namespace @ns do
+        define_tasks
+      end
+    else
+      define_tasks
+    end
+
+    #
+    # tasks to be kept out of any optional namespace
+    #
+
+    desc "config check"
+    task :buildar do
+      spacer = " " * 14
+      gemspec = self.gemspec
+      puts
+      puts <<EOF
+     Project: #{gemspec.name} #{gemspec.version}
+Gemspec file: #{@gemspec_file}
+Version file: #{@version_file}
+     Use git: #{@use_git}
+ Package dir: #{@pkg_dir}
+       Files: #{gemspec.files.join("\n#{spacer}")}
+  Built gems: #{Dir[@pkg_dir +  '/*.gem'].join("\n#{spacer}")}
+# using Buildar #{Buildar.version}
+EOF
+      puts
+    end
+
+    if @version_file
+      # tasks :bump_major, :bump_minor, :bump_patch, :bump_build
+      # commit the version file if @use_git
+      #
+      [:major, :minor, :patch, :build].each { |v|
+        desc "increment the #{v} number in #{@version_file}"
+        namespace :bump do
+          task v do
+            old_version = self.read_version
+            new_version = self.class.bump(v, old_version)
+
+            puts "bumping #{old_version} to #{new_version}"
+            self.write_version new_version
+
+            if @use_git
+              msg = "Buildar version:bump_#{v} to #{new_version}"
+              sh "git commit #{@version_file} -m #{msg.inspect}"
+            end
+          end
+        end
+
+        unless v == :build
+        end
+      }
+    end
+  end
+
+  def define_tasks
+    desc "invoke :test and :bump_build conditionally"
     task :pre_build do
       Rake::Task[:test].invoke if Rake::Task.task_defined? :test
-      Rake::Task[:bump_build].invoke if @version_file
+      Rake::Task['bump:build'].invoke if @version_file
     end
 
     # can't make this a file task, because the version could be bumped
     # as a dependency, changing the target file
     #
     desc "build a .gem in #{@pkg_dir}/ using `gem build`"
-    task :build => [:pre_build] do
+    task :build => :pre_build do
       if @gemspec_file
         sh "gem build #{@gemspec_file}"
         mv File.basename(self.gem_file), self.gem_file
@@ -95,7 +155,7 @@ class Buildar < Rake::TaskLib
     # operates with a hard or soft gemspec
     #
     desc "build a .gem in #{@pkg_dir}/ using Gem::PackageTask"
-    task :gem_package => [:pre_build] do
+    task :gem_package => :pre_build do
       # definine the task at runtime, rather than requiretime
       # so that the gemspec will reflect any version bumping since requiretime
       require 'rubygems/package_task'
@@ -103,91 +163,60 @@ class Buildar < Rake::TaskLib
       Rake::Task["package"].invoke
     end
 
-    desc "used internally; make sure we have .gem for the current version"
+    # desc "used internally; make sure we have .gem for the current version"
     task :built do
       Rake::Task[:build].invoke unless File.exists? self.gem_file
     end
 
-    desc "publish the current version"
-    task :publish => [:built] do
+    desc "publish the current version to rubygems.org"
+    task :publish => :built do
       sh "gem push #{self.gem_file}"
     end
 
-    desc "publish a new version; tag conditionally"
+    desc "build, publish " << (@use_git ? ", tag " : '')
     task :release => [:build, :publish] do
       Rake::Task[:tag].invoke if @use_git
     end
 
     desc "install the current version"
-    task :install => [:built] do
+    task :install => :built do
       sh "gem install #{self.gem_file}"
     end
 
     desc "build a new version and install"
     task :install_new => [:build, :install]
 
-    # tasks :bump_major, :bump_minor, :bump_patch, :bump_build
-    # commit the version file if @use_git
     #
+    # Optional tasks
+    #
+
     if @version_file
-      [:major, :minor, :patch, :build].each { |v|
-        desc "increment the #{v} number in #{@version_file}"
-        task "bump_#{v}" do
-          old_version = self.read_version
-          new_version = self.class.bump(v, old_version)
-
-          puts "bumping #{old_version} to #{new_version}"
-          self.write_version new_version
-
-          if @use_git
-            msg = "rake bump_#{v} to #{new_version}"
-            sh "git commit #{@version_file} -m #{msg.inspect}"
-          end
-        end
-
-        unless v == :build
+      [:major, :minor, :patch].each { |v|
+        namespace :release do
           desc "increment the #{v} number and release"
-          task "release_#{v}" => ["bump_#{v}", :release]
+          task v => ["bump:#{v}", :release]
         end
       }
     end
 
-    # if proj.use_git
-    # create annotated git tag based on VERSION and ENV['message'] if available
-    # push tags to origin
-    #
     if @use_git
-      desc "annotated git tag with name (version) and message"
-      task :tag => [:message] do
+      desc "annotated git tag with version and message"
+      task :tag => :message do
         Rake::Task[:test].invoke if Rake::Task.defined? :test
         tagname = "v#{self.gemspec.version}"
-        message = ENV['message'] || "auto-tagged #{tagname} by Rake"
+        message = ENV['message'] || "auto-tagged #{tagname} by Buildar"
         sh "git tag -a #{tagname.inspect} -m #{message.inspect}"
         sh "git push origin --tags"
       end
-    end
 
-    desc "used internally; make sure ENV['message'] is populated"
-    task :message do
-      if !ENV['message'] or ENV['message'].empty?
-        print "This task requires a message:\n> "
-        ENV['message'] = $stdin.gets.chomp
+      # right now only :tag depends on this, but maybe others in the future?
+      # desc "used internally; make sure ENV['message'] is populated"
+      task :message do
+        if !ENV['message'] or ENV['message'].empty?
+          print "This task requires a message:\n> "
+          ENV['message'] = $stdin.gets.chomp
+        end
       end
-    end
-
-    desc "config check"
-    task :buildar do
-      gemspec = self.gemspec
-      puts
-      puts <<EOF
-     Project: #{gemspec.name} #{gemspec.version}
-Gemspec file: #{@gemspec_file}
-Version file: #{@version_file}
-     Use git: #{@use_git}
-       Files: #{gemspec.files.join("\n              ")}
-# using Buildar #{Buildar.version}
-EOF
-      puts
     end
   end
 end
