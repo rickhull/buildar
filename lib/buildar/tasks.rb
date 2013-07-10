@@ -46,6 +46,7 @@ task :build => [:test, :bump_build] do
     sh "gem build #{proj.gemspec_filename}"
     target_file = "#{proj.name}-#{proj.available_version}.gem"
     if File.exists? target_file
+      sh "mkdir pkg" unless File.exists?('pkg')
       sh "mv #{target_file} pkg/#{target_file}"
     else
       puts "warning: expected #{target_file} but didn't find it"
