@@ -10,19 +10,18 @@ With a set of options to integrate with your current project.
 Rake tasks
 ----------
 Core
-* `release` - `message` `build` `tag` `publish`
-* `build` - `test` `bump_build` build a .gem file inside pkg/
-* `test` - runs your tests using rake/testtask
-* `message` - capture a message from ENV['message'] or prompt STDIN
-* `install` - `build` uninstall, install built .gem
-* `version` - show the current project version
-* `buildar` - config check
-
-With rubygems.org integration
-* `publish` - `verify publish credentials` gem push
-
-With git integration
-* `tag` - `test` git tag according to current version, pushed to origin
+*     `release` - `build` `publish` `tag`
+*       `build` - `pre_build` gem build a pkg/.gem
+* `gem_package` - `pre_build` Gem::PackageTask builds a pkg/.gem
+*     `install` - `built` install built .gem
+* `install_new` - `build` install built .gem
+*     `version` - show the current project version
+*     `buildar` - config check
+*     `message` - capture a message from ENV['message'] or prompt STDIN
+* `pre_build` - invoke `test` and `bump_build` conditionally
+* `built`     - `build`
+* `publish`   - `built` gem push
+* `tag`       - `message` git tag according to current version, pushed to origin
 
 With version file integration
 * `bump_build` - increment the 4th version number (1.2.3.4 -> 1.2.3.5)
