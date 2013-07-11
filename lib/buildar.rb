@@ -199,7 +199,7 @@ EOF
     if @use_git
       desc "annotated git tag with version and message"
       task :tag => :message do
-        Rake::Task[:test].invoke if Rake::Task.defined? :test
+        Rake::Task[:test].invoke if Rake::Task.task_defined? :test
         tagname = "v#{self.gemspec.version}"
         message = ENV['message'] || "auto-tagged #{tagname} by Buildar"
         sh "git tag -a #{tagname.inspect} -m #{message.inspect}"
