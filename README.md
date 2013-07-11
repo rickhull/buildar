@@ -18,10 +18,10 @@ Core
 *     `version` - show the current project version
 *     `buildar` - config check
 *     `message` - capture a message from ENV['message'] or prompt STDIN
-* `pre_build` - invoke `test` and `bump_build` conditionally
-* `built`     - `build`
-* `publish`   - `built` gem push
-* `tag`       - `message` git tag according to current version, pushed to origin
+*   `pre_build` - invoke `test` and `bump_build` conditionally
+*       `built` - `build`
+*     `publish` - `built` gem push
+*         `tag` - `message` git tag according to current version, pushed to origin
 
 With version file integration
 * `bump_build` - increment the 4th version number (1.2.3.4 -> 1.2.3.5)
