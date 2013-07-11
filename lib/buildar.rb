@@ -130,7 +130,7 @@ EOF
 
   def define_tasks
     desc "invoke :test and :bump_build conditionally"
-    task :pre_build do
+    task :pre_build => @pkg_dir do
       Rake::Task[:test].invoke if Rake::Task.task_defined? :test
       Rake::Task['bump:build'].invoke if @version_file
     end
