@@ -134,19 +134,13 @@ To https://github.com/rickhull/buildar.git
 
 Use a VERSION file
 ------------------
-* Buildar can manage your version numbers with `b.use_version_file = true`
+* Buildar can manage your version numbers with `b.version_file = $filename`
 * The version only matters in the context of a release.  For internal development, git SHAs vastly outclass version numbers.
 * "The right version number" for the next release is a function of the current release version and the magnitude (or breakiness) of the change
 * http://semver.org/
 * Automate everything
 
-Enable and configure a version file:
-```ruby
-  b.use_version_file = true
-  b.version_filename = 'VERSION'
-```
-
-The VERSION file should look something like
+The [VERSION](https://github.com/rickhull/buildar/blob/master/VERSION) file at your project root should look something like
 ```
 1.2.3.4
 ```
@@ -186,9 +180,9 @@ I like to let Buildar manage my [VERSION](https://github.com/rickhull/buildar/bl
 
 With
 ```ruby
-Buildar.conf(__FILE__) do |b|
-  b.use_gemspec_file = true
-  b.use_version_file = true
+Buildar.new do |b|
+  b.gemspec_file = 'example.gemspec'
+  b.version_file = 'VERSION'
 ```
 
 You'll need to keep your gemspec file in synch with the version_file.  Here's [how Buildar does it](https://github.com/rickhull/buildar/blob/master/buildar.gemspec):
@@ -204,25 +198,3 @@ You'll need to keep your gemspec file in synch with the version_file.  Here's [h
   s.version  = File.read(version_file).chomp
   s.files = File.readlines(manifest_file).map { |f| f.chomp }
 ```
-
-Integrate with git
-------------------
-Enable git integration with `b.use_git = true`.  This empowers `tag` and `bump`:
-* `tag` is a `release` dependency.  It depends on `test` git tag -a $tagname -m $message
-* `bump` and friends will commit VERSION changes
-
-Publish to rubygems.org
------------------------
-Enable `publish` to rubygems.org with `b.publish[:rubygems] = true`.
-
-Testing it out
---------------
-```shell
-rake buildar  # print Buildar's config / smoketest
-rake version  # print the Buildar's understanding of the version
-rake build    # build a .gem file in pkg/
-rake install  # build, uninstall, install
-rake release  # build the .gem and push it rubygems.org
-```
-
-`release` depends on `publish` which depends on `verify_publish_credentials` which will fail if you don't have `~/.gem/credentials`.  In that case, sign up for an account at http://rubygems.org/ and follow the instructions to get your credentials file setup.
