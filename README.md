@@ -104,7 +104,7 @@ Buildar.new do |b|
 end
 ```
 
-With b.version_file and b.use_git, you can e.g. `release:patch`
+With b.version_file and b.use_git
 
 ```
 $ rake release:patch message="added version task; demonstrating Usage"
