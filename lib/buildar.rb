@@ -183,6 +183,11 @@ EOF
     desc "build a new version and install"
     task :install_new => [:build, :install]
 
+    desc "display current version"
+    task :version do
+      puts self.gemspec.version
+    end
+
     #
     # Optional tasks
     #
