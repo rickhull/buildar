@@ -102,7 +102,7 @@ Buildar.new do |b|
 end
 ```
 
-With b.version_file and b.use_git
+With `b.version_file` and `b.use_git`
 
 ```
 $ rake release:patch message="added version task; demonstrating Usage"
@@ -132,7 +132,7 @@ To https://github.com/rickhull/buildar.git
 
 Use a VERSION file
 ------------------
-* Buildar can manage your version numbers with `b.version_file = $filename`
+* Buildar can manage your version numbers with `b.version_file`
 * The version only matters in the context of a release.  For internal development, git SHAs vastly outclass version numbers.
 * "The right version number" for the next release is a function of the current release version and the magnitude (or breakiness) of the change
 * http://guides.rubygems.org/patterns/#semantic-versioning
