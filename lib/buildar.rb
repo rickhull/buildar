@@ -83,7 +83,7 @@ class Buildar < Rake::TaskLib
     end
 
     #
-    # tasks to be kept out of any optional namespace
+    # tasks to be kept out of @ns namespace
     #
 
     desc "config check"
@@ -105,12 +105,12 @@ EOF
     end
 
     if @version_file
-      # tasks :bump_major, :bump_minor, :bump_patch, :bump_build
-      # commit the version file if @use_git
-      #
-      [:major, :minor, :patch, :build].each { |v|
-        desc "increment the #{v} number in #{@version_file}"
-        namespace :bump do
+      namespace :bump do
+        # tasks :bump_major, :bump_minor, :bump_patch, :bump_build
+        # commit the version file if @use_git
+        #
+        [:major, :minor, :patch, :build].each { |v|
+          desc "increment the #{v} number in #{@version_file}"
           task v do
             old_version = self.read_version
             new_version = self.class.bump(v, old_version)
@@ -123,8 +123,8 @@ EOF
               sh "git commit #{@version_file} -m #{msg.inspect}"
             end
           end
-        end
-      }
+        }
+      end
     end
   end
 
@@ -193,12 +193,12 @@ EOF
     #
 
     if @version_file
-      [:major, :minor, :patch].each { |v|
-        namespace :release do
+      namespace :release do
+        [:major, :minor, :patch].each { |v|
           desc "increment the #{v} number and release"
           task v => ["bump:#{v}", :release]
-        end
-      }
+        }
+      end
     end
 
     if @use_git
