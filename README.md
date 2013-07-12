@@ -144,7 +144,7 @@ The [VERSION](https://github.com/rickhull/buildar/blob/master/VERSION) file at y
 1.2.3.4
 ```
 
-Buildar will be able to `bump:major` `bump:minor` `bump:patch` and `bump:build`.  This helps with a repeatable, identifiable builds: `build` depends on `bump:build` etc.
+Buildar will be able to `bump:major` `bump:minor` `bump:patch` and `bump:build`.  This helps with a repeatable, identifiable builds: `build` invokes `bump:build` etc.
 
 Every build bumps the build number.  Since the build operates off of your potentially dirty working copy, and not some commit SHA, there is no guarantee that things haven't changed between builds, even if "nothing is supposed to have changed".  This guarantees that you can't have 2 builds floating around with the same version number but different contents.
 
