@@ -13,23 +13,28 @@ Core
 *     `release` - `build` `publish` `tag`
 *       `build` - `pre_build` gem build a pkg/.gem
 * `gem_package` - `pre_build` Gem::PackageTask builds a pkg/.gem
-*     `install` - `built` install built .gem
+*     `publish` - `built` gem push
+*     `buildar` - config check
+
+Aux
+*   `pre_build` - invoke `test` and `bump:build` conditionally
+*       `built` - `build` conditionally
+*     `install` - `built` gem install .gem
 * `install_new` - `build` install built .gem
 *     `version` - show the current project version
-*     `buildar` - config check
-*     `message` - capture a message from ENV['message'] or prompt STDIN
-*   `pre_build` - invoke `test` and `bump_build` conditionally
-*     `publish` - `built` gem push
-*         `tag` - `message` git tag according to current version, pushed to origin
+
+With git integration
+*     `tag` - `message` git tag current version, push to origin
+* `message` - capture a message from ENV['message'] or prompt STDIN
 
 With version file integration
-* `bump_build` - increment the 4th version number (1.2.3.4 -> 1.2.3.5)
-* `bump_patch` - increment the 3rd version number (1.2.3.4 -> 1.2.4.0)
-* `bump_minor` - increment the 2nd version number (1.2.3.4 -> 1.3.0.0)
-* `bump_major` - increment the 1st version number (1.2.3.4 -> 2.0.0.0)
-* `release_patch` - `bump_patch` `release`
-* `release_minor` - `bump_minor` `release`
-* `release_major` - `bump_major` `release`
+* `bump:build` - increment the 4th version number (1.2.3.4 -> 1.2.3.5)
+* `bump:patch` - increment the 3rd version number (1.2.3.4 -> 1.2.4.0)
+* `bump:minor` - increment the 2nd version number (1.2.3.4 -> 1.3.0.0)
+* `bump:major` - increment the 1st version number (1.2.3.4 -> 2.0.0.0)
+* `release:patch` - `bump:patch` `release`
+* `release:minor` - `bump:minor` `release`
+* `release:major` - `bump:major` `release`
 
 Tasks which depend on optional functionality will not fail if the option is disabled.  They are effectively skipped.
 
@@ -125,12 +130,14 @@ The VERSION file should look something like
 1.2.3.4
 ```
 
-Buildar will be able to `bump_major` `bump_minor` `bump_patch` and `bump_build`.  This helps with a repeatable, identifiable builds: `build` depends on `bump_build` etc.
+Buildar will be able to `bump:major` `bump:minor` `bump:patch` and `bump:build`.  This helps with a repeatable, identifiable builds: `build` depends on `bump:build` etc.
 
-Every build bumps the build number.  Since the build operates off of your potentially dirty working copy, and not some commit SHA, there is no guarantee that things haven't changed between builds, even if "nothing is supposed to have changed".  Typically you'll want to let Buildar manage the build number, and you manage the major, minor, and patch numbers with:
-* `release_major` - `bump_major`
-* `release_minor` - `bump_minor`
-* `release_patch` - `bump_patch`
+Every build bumps the build number.  Since the build operates off of your potentially dirty working copy, and not some commit SHA, there is no guarantee that things haven't changed between builds, even if "nothing is supposed to have changed".  This guarantees that you can't have 2 builds floating around with the same version number but different contents.
+
+Typically you'll want to let Buildar manage the build number, and you manage the major, minor, and patch numbers with:
+* `release:major` - `bump:major`
+* `release:minor` - `bump:minor`
+* `release:patch` - `bump:patch`
 
 To make your app or lib aware of its version via this file, simply:
 
