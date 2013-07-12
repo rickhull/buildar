@@ -74,8 +74,26 @@ Pushing gem to https://rubygems.org...
 Successfully registered gem: example (1.2.3)
 ```
 
+Without a gemspec file
+----------------------
+```ruby
+Buildar.new do |b|
+  b.gemspec.name = 'example'
+  b.gemspec.summary  = 'Example of foo lorem ipsum'
+  b.gemspec.author   = 'Buildar'
+  b.gemspec.license  = 'MIT'
+  b.gemspec.description = 'Foo bar baz quux'
+  b.gemspec.files = ['Rakefile']
+  b.gemspec.version = 1.2.3
+end
+```
 
-Here is Buildar's rakefile.rb:
+From [examples/no_gemspec_file.rb](https://github.com/rickhull/buildar/blob/master/examples/no_gemspec_file.rb)
+
+Dogfood
+-------
+Here is Buildar's [rakefile.rb](https://github.com/rickhull/buildar/blob/master/rakefile.rb):
+
 ```ruby
 require 'buildar'
 
@@ -113,47 +131,6 @@ git push origin --tags
 To https://github.com/rickhull/buildar.git
 * [new tag]         v2.0.1.1 -> v2.0.1.1
 ```
-
-Without a gemspec file
-----------------------
-```ruby
-Buildar.new do |b|
-  b.gemspec.name = 'example'
-  b.gemspec.summary  = 'Example of foo lorem ipsum'
-  b.gemspec.author   = 'Buildar'
-  b.gemspec.license  = 'MIT'
-  b.gemspec.description = 'Foo bar baz quux'
-  b.gemspec.files = ['Rakefile']
-  b.gemspec.version = 1.2.3
-end
-```
-
-From [examples/no_gemspec_file.rb](https://github.com/rickhull/buildar/blob/master/examples/no_gemspec_file.rb)
-
-Someone told me this breaks [Bundler](https://github.com/bundler/bundler), so maybe just use a gemspec file, k?
-
-Dogfood
--------
-Here is Buildar's [rakefile.rb](https://github.com/rickhull/buildar/blob/master/rakefile.rb):
-
-```ruby
-require 'buildar/tasks'
-require 'rake/testtask'
-
-Buildar.conf(__FILE__) do |b|
-  b.name = 'buildar'
-  b.use_version_file  = true
-  b.version_filename  = 'VERSION'
-  b.use_git           = true
-  b.publish[:rubygems] = true
-end
-
-Rake::TestTask.new :test do |t|
-  t.pattern = 'test/*.rb'
-end
-```
-
-You can use it as a starting point.
 
 Use a VERSION file
 ------------------
