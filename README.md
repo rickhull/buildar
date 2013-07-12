@@ -51,39 +51,84 @@ Usage
 Edit your Rakefile.  Add to the top:
 
 ```ruby
-require 'buildar/tasks'
+require 'buildar'
 
-Buildar.conf(__FILE__) do |b|
-  b.name = 'Example'             # optional, inferred from directory
-  # ...
-end
-
-# make sure you have a task named :test, even if it's empty
-task :test do
-  # ...
+Buildar.new do |b|
+  b.gemspec_file = 'example.gemspec'
 end
 ```
 
-That is basically the minimal Rakefile needed for Buildar to operate, assuming you have a valid gemspec file named `Example.gemspec`.
+That is basically the minimal Rakefile needed for Buildar to operate, assuming you have a valid gemspec file named `example.gemspec`.
+
+```
+$ rake release
+gem build example.gemspec
+WARNING:  no email specified
+Successfully built RubyGem
+Name: example
+Version: 1.2.3
+File: example-1.2.3.gem
+mv buildar-1.2.3.gem pkg/example-2.0.1.1.gem
+gem push pkg/example-1.2.3.gem
+Pushing gem to https://rubygems.org...
+Successfully registered gem: example (1.2.3)
+```
+
+
+Here is Buildar's rakefile.rb:
+```ruby
+require 'buildar'
+
+Buildar.new do |b|
+  b.gemspec_file = 'buildar.gemspec'
+  b.version_file = 'VERSION'
+  b.use_git      = true
+end
+```
+
+With b.version_file and b.use_git
+
+`rake release:patch message="added version task; demonstrating Usage"`
+
+```
+bumping 2.0.0.9 to 2.0.1.0
+git commit VERSION -m "Buildar version:bump_patch to 2.0.1.0"
+[master 5df1ff8] Buildar version:bump_patch to 2.0.1.0
+1 file changed, 1 insertion(+), 1 deletion(-)
+bumping 2.0.1.0 to 2.0.1.1
+git commit VERSION -m "Buildar version:bump_build to 2.0.1.1"
+[master 73d9bdb] Buildar version:bump_build to 2.0.1.1
+1 file changed, 1 insertion(+), 1 deletion(-)
+gem build buildar.gemspec
+WARNING:  no email specified
+Successfully built RubyGem
+Name: buildar
+Version: 2.0.1.1
+File: buildar-2.0.1.1.gem
+mv buildar-2.0.1.1.gem pkg/buildar-2.0.1.1.gem
+gem push pkg/buildar-2.0.1.1.gem
+Pushing gem to https://rubygems.org...
+Successfully registered gem: buildar (2.0.1.1)
+git tag -a "v2.0.1.1" -m "added version task; demonstrating Usage"
+git push origin --tags
+To https://github.com/rickhull/buildar.git
+* [new tag]         v2.0.1.1 -> v2.0.1.1
+```
 
 Without a gemspec file
 ----------------------
 ```ruby
-Buildar.conf(__FILE__) do |b|
-  b.name = 'Example'
-  b.use_gemspec_file = false
-  b.use_version_file = false
-  b.use_git = false
-  b.publish[:rubygems] = false
-
+Buildar.new do |b|
+  b.gemspec.name = 'example'
   b.gemspec.summary  = 'Example of foo lorem ipsum'
   b.gemspec.author   = 'Buildar'
   b.gemspec.license  = 'MIT'
   b.gemspec.description = 'Foo bar baz quux'
   b.gemspec.files = ['Rakefile']
-  b.gemspec.version = 2.0
+  b.gemspec.version = 1.2.3
 end
 ```
+
 From [examples/no_gemspec_file.rb](https://github.com/rickhull/buildar/blob/master/examples/no_gemspec_file.rb)
 
 Someone told me this breaks [Bundler](https://github.com/bundler/bundler), so maybe just use a gemspec file, k?
