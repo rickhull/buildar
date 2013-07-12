@@ -68,7 +68,7 @@ Successfully built RubyGem
 Name: example
 Version: 1.2.3
 File: example-1.2.3.gem
-mv buildar-1.2.3.gem pkg/example-2.0.1.1.gem
+mv example-1.2.3.gem pkg/example-2.0.1.1.gem
 gem push pkg/example-1.2.3.gem
 Pushing gem to https://rubygems.org...
 Successfully registered gem: example (1.2.3)
@@ -86,11 +86,10 @@ Buildar.new do |b|
 end
 ```
 
-With b.version_file and b.use_git
-
-`rake release:patch message="added version task; demonstrating Usage"`
+With b.version_file and b.use_git, you can e.g. `release:patch`
 
 ```
+$ rake release:patch message="added version task; demonstrating Usage"
 bumping 2.0.0.9 to 2.0.1.0
 git commit VERSION -m "Buildar version:bump_patch to 2.0.1.0"
 [master 5df1ff8] Buildar version:bump_patch to 2.0.1.0
