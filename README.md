@@ -36,8 +36,6 @@ With version file integration
 * `release:minor` - `bump:minor` `release`
 * `release:major` - `bump:major` `release`
 
-Tasks which depend on optional functionality will not fail if the option is disabled.  They are effectively skipped.
-
 [Just show me the tasks](https://github.com/rickhull/buildar/blob/master/lib/buildar.rb#L73)
 
 Install
