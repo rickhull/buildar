@@ -159,11 +159,6 @@ To make your app or lib aware of its version via this file, simply:
 # e.g. lib/foo.rb
 #################
 module Foo
-  # use a method, not a constant like VERSION
-  # if you use a constant, then you're doing an extra file read at requiretime
-  # and that hurts production.  This method should not be called in production.
-  # It's here more for deployment and sysadmin purposes.  Memoize as needed.
-  #
   def self.version
     file = File.expand_path('../../VERSION', __FILE__)
 	File.read(file).chomp
@@ -175,8 +170,6 @@ If you stick with the default `b.use_version_file = false` then you need to make
 
 Gemspec file tricks
 -------------------
-I like to let Buildar manage my [VERSION](https://github.com/rickhull/buildar/blob/master/VERSION) file, and I also like to maintain my [MANIFEST.txt](https://github.com/rickhull/buildar/blob/master/MANIFEST.txt) -- the canonical list of files belonging to the project -- outside of [buildar.gemspec](https://github.com/rickhull/buildar/blob/master/buildar.gemspec).
-
 With
 ```ruby
 Buildar.new do |b|
@@ -197,3 +190,5 @@ You'll need to keep your gemspec file in synch with the version_file.  Here's [h
   s.version  = File.read(version_file).chomp
   s.files = File.readlines(manifest_file).map { |f| f.chomp }
 ```
+
+I also like to maintain a [MANIFEST.txt](https://github.com/rickhull/buildar/blob/master/MANIFEST.txt) -- the canonical list of files belonging to the project -- outside of the gemspec.
