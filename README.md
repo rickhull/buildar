@@ -82,7 +82,7 @@ Buildar.new do |b|
   b.gemspec.license  = 'MIT'
   b.gemspec.description = 'Foo bar baz quux'
   b.gemspec.files = ['Rakefile']
-  b.gemspec.version = 1.2.3
+  b.gemspec.version = '1.2.3'
 end
 ```
 
