@@ -75,9 +75,7 @@ class Buildar < Rake::TaskLib
     CLOBBER.include @pkg_dir
 
     if @ns and !@ns.empty?
-      namespace @ns do
-        define_tasks
-      end
+      namespace(@ns) { define_tasks }
     else
       define_tasks
     end
@@ -93,7 +91,13 @@ class Buildar < Rake::TaskLib
       puts
       puts <<EOF
      Project: #{gemspec.name} #{gemspec.version}
+EOF
+      if @gemspec_file
+        puts <<EOF
 Gemspec file: #{@gemspec_file}
+EOF
+      end
+      puts <<EOF
 Version file: #{@version_file}
      Use git: #{@use_git}
  Package dir: #{@pkg_dir}
