@@ -166,7 +166,7 @@ module Foo
 end
 ```
 
-If you stick with the default `b.use_version_file = false` then you need to make sure to keep your gemspec's version attribute updated.
+`b.version_file` defaults to nil, so if you don't set it, you'll have to keep your gemspec's version attribute updated.
 
 Gemspec file tricks
 -------------------
