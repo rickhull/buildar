@@ -89,14 +89,8 @@ class Buildar < Rake::TaskLib
       spacer = " " * 14
       gemspec = self.gemspec
       puts
-      puts <<EOF
-     Project: #{gemspec.name} #{gemspec.version}
-EOF
-      if @gemspec_file
-        puts <<EOF
-Gemspec file: #{@gemspec_file}
-EOF
-      end
+      puts "     Project: #{gemspec.name} #{gemspec.version}"
+      puts "Gemspec file: #{@gemspec_file}" if @gemspec_file
       puts <<EOF
 Version file: #{@version_file}
      Use git: #{@use_git}
