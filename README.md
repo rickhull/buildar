@@ -1,3 +1,7 @@
+[![Gem Version](https://badge.fury.io/rb/buildar.svg)](http://badge.fury.io/rb/buildar)
+[![Dependency Status](https://gemnasium.com/rickhull/buildar.svg)](https://gemnasium.com/rickhull/buildar)
+[![Security Status](https://hakiri.io/github/rickhull/buildar/master.svg)](https://hakiri.io/github/rickhull/buildar/master/shield)
+
 Buildar
 =======
 Buildar provides a set of rake tasks to help automate releasing your gem:
