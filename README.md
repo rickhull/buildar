@@ -90,7 +90,7 @@ From [examples/no_gemspec_file.rb](https://github.com/rickhull/buildar/blob/mast
 
 Dogfood
 -------
-Here is Buildar's [rakefile.rb](https://github.com/rickhull/buildar/blob/master/rakefile.rb):
+Here is Buildar's [Rakefile](https://github.com/rickhull/buildar/blob/master/Rakefile):
 
 ```ruby
 require 'buildar'

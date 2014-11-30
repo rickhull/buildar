@@ -2,5 +2,5 @@ buildar.gemspec
 MANIFEST.txt
 VERSION
 README.md
-rakefile.rb
+Rakefile
 lib/buildar.rb

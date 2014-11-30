@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   # static stuff
   s.name     = 'buildar'
-  s.summary  = 'Buildar crept inside your rakefile and scratched upon the tasking post'
+  s.summary  = 'Buildar crept inside your Rakefile and scratched upon the tasking post'
   s.author   = 'Rick Hull'
   s.homepage = 'https://github.com/rickhull/buildar'
   s.license  = 'MIT'
