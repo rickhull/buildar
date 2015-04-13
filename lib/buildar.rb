@@ -116,7 +116,7 @@ EOF
             puts "bumping #{old_version} to #{new_version}"
             self.write_version new_version
 
-            if @use_git
+            if @use_git and v != :build
               msg = "Buildar version:bump_#{v} to #{new_version}"
               sh "git commit #{@version_file} -m #{msg.inspect}"
             end
