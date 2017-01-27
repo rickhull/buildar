@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.has_rdoc = true
   s.description = 'Buildar helps automate the release process with versioning, building, packaging, and publishing.  Optional git integration.'
 
-  s.add_runtime_dependency        "rake", ">= 8" # guess?
+  s.add_runtime_dependency "rake"
 
   # dynamic setup
   this_dir = File.expand_path('..', __FILE__)
