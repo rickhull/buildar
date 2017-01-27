@@ -87,7 +87,7 @@ class Buildar < Rake::TaskLib
     desc "config check"
     task :buildar do
       spacer = " " * 14
-      gemspec = self.gemspec
+      gemspec = self.gemspec || raise("no valid gemspec")
       puts
       puts "     Project: #{gemspec.name} #{gemspec.version}"
       puts "Gemspec file: #{@gemspec_file}" if @gemspec_file
