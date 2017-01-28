@@ -1,0 +1,13 @@
+* buildar generate rakefile
+ - looks at current dir to determine gem name
+ - creates a Rakefile like:
+begin
+  require 'buildar'
+  Buildar.new.do  |b|
+    b.gemspec_file = "#{gem}.gemspec"
+  end
+rescue LoadError
+  # ok
+end
+ - take an argument for gemname, even
+ - consider name: buildarakefile
