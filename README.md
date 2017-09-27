@@ -15,18 +15,18 @@ With a set of options to integrate with your current project.
 
 ### Core
 
-* *`release`*     - *`build`*, *`publish`*, *`tag`*
-* **`build`**       - **`prebuild`**, then build with `gem build`
-* **`gem_package`** - **`pre_build`**, then build with `Gem::PackageTask`
-* **`publish`**     - **`built`**, then `gem push`
+* **`release`**     - *`build`*, *`publish`*, *`tag`*
+* **`build`**       - *`prebuild`*, then build with `gem build`
+* **`gem_package`** - *`pre_build`*, then build with `Gem::PackageTask`
+* **`publish`**     - *`built`*, then `gem push`
 * **`buildar`**     - config check
 
 ### Aux
 
-* **`pre_build`** - invoke **`test`** and **`bump:build`** conditionally
-* **`built`**     - invoke **`build`** conditionally
-* **`install`**   - **`built`**, then `gem install`
-* **`install_new`** - **`build`**, then `gem install`
+* **`pre_build`** - invoke *`test`* and *`bump:build`* conditionally
+* **`built`**     - invoke *`build`* conditionally
+* **`install`**   - *`built`*, then `gem install`
+* **`install_new`** - *`build`*, then `gem install`
 * **`version`**     - show the current project version
 
 ### With git integration
