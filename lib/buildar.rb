@@ -14,7 +14,7 @@ class Buildar < Rake::TaskLib
   def self.bump(position, version)
     pos = [:major, :minor, :patch, :build].index(position) || position
     places = version.split('.')
-    if pos >= places.length and pos <= places.length + 2
+    if places.length <= pos and pos <= places.length + 3
       # add zeroes to places up to pos
       # allows bump(:build, '0') #=> '0.0.0.1'
       places.length.upto(pos) { |i| places[i] = 0 }
