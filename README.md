@@ -16,23 +16,22 @@ With a set of options to integrate with your current project.
 ### Core
 
 * **`release`**     - *`build`*, *`publish`*, *`tag`*
-* **`build`**       - *`prebuild`*, then build with `gem build`
-* **`gem_package`** - *`pre_build`*, then build with `Gem::PackageTask`
-* **`publish`**     - *`built`*, then `gem push`
+* **`build`**       - *`prebuild`*, `gem build`
+* **`gem_package`** - *`pre_build`*, build with `Gem::PackageTask`
+* **`publish`**     - *`built`*, `gem push`
 * **`buildar`**     - config check
 
 ### Aux
 
 * **`pre_build`** - invoke *`test`* and *`bump:build`* conditionally
 * **`built`**     - invoke *`build`* conditionally
-* **`install`**   - *`built`*, then `gem install`
-* **`install_new`** - *`build`*, then `gem install`
+* **`install`**   - *`built`*, `gem install`
+* **`install_new`** - *`build`*, `gem install`
 * **`version`**     - show the current project version
 
 ### With git integration
 
-* **`tag`**     - **`message`**, then `git tag` current version,
-                  then `git push` to origin
+* **`tag`**     - *`message`*, `git tag` current version, `git push` to origin
 * **`message`** - capture a message from `ENV['message']` or prompt STDIN
 
 ### With version file integration
@@ -41,9 +40,9 @@ With a set of options to integrate with your current project.
 * **`bump:patch`** - increment the 3rd version number (1.2.3.4 -> 1.2.4.0)
 * **`bump:minor`** - increment the 2nd version number (1.2.3.4 -> 1.3.0.0)
 * **`bump:major`** - increment the 1st version number (1.2.3.4 -> 2.0.0.0)
-* **`release:patch`** - **`bump:patch`**, **`release`**
-* **`release:minor`** - **`bump:minor`**, **`release`**
-* **`release:major`** - **`bump:major`**, **`release`**
+* **`release:patch`** - *`bump:patch`*, *`release`*
+* **`release:minor`** - *`bump:minor`*, *`release`*
+* **`release:major`** - *`bump:major`*, *`release`*
 
 [Just show me the tasks](https://github.com/rickhull/buildar/blob/master/lib/buildar.rb#L73)
 
