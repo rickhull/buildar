@@ -15,9 +15,9 @@ With a set of options to integrate with your current project.
 
 ### Core
 
-* `release` - build, publish, tag
-* `build` - prebuild, then `gem build` a pkg/.gem
-* `gem_package` - `pre_build` Gem::PackageTask builds a pkg/.gem
+* **`release`** - `build`, `publish`, `tag`
+* `build` - `prebuild`, then build with `gem build`
+* `gem_package` - `pre_build` Gem::PackageTask builds a pkg/foo.gem
 * `publish` - `built` gem push
 * `buildar` - config check
 
