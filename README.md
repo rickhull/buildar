@@ -15,7 +15,7 @@ With a set of options to integrate with your current project.
 
 ### Core
 
-* **`release`**     - **`build`**, **`publish`**, **`tag`**
+* *`release`*     - *`build`*, *`publish`*, *`tag`*
 * **`build`**       - **`prebuild`**, then build with `gem build`
 * **`gem_package`** - **`pre_build`**, then build with `Gem::PackageTask`
 * **`publish`**     - **`built`**, then `gem push`
