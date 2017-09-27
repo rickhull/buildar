@@ -2,8 +2,8 @@
 [![Dependency Status](https://gemnasium.com/rickhull/buildar.svg)](https://gemnasium.com/rickhull/buildar)
 [![Security Status](https://hakiri.io/github/rickhull/buildar/master.svg)](https://hakiri.io/github/rickhull/buildar/master/shield)
 
-Buildar
-=======
+# Buildar
+
 Buildar provides a set of rake tasks to help automate releasing your gem:
 * Versioning
 * Building / Packaging
@@ -11,17 +11,17 @@ Buildar provides a set of rake tasks to help automate releasing your gem:
 
 With a set of options to integrate with your current project.
 
-Rake tasks
-----------
-Core
+## Rake tasks
 
-*     `release` - build, publish, tag
-*       `build` - prebuild, then `gem build` a pkg/.gem
+### Core
+
+* `release` - build, publish, tag
+* `build` - prebuild, then `gem build` a pkg/.gem
 * `gem_package` - `pre_build` Gem::PackageTask builds a pkg/.gem
-*     `publish` - `built` gem push
-*     `buildar` - config check
+* `publish` - `built` gem push
+* `buildar` - config check
 
-Aux
+### Aux
 
 *   `pre_build` - invoke `test` and `bump:build` conditionally
 *       `built` - `build` conditionally
@@ -29,12 +29,12 @@ Aux
 * `install_new` - `build` install built .gem
 *     `version` - show the current project version
 
-With git integration
+### With git integration
 
 *     `tag` - `message` git tag current version, push to origin
 * `message` - capture a message from ENV['message'] or prompt STDIN
 
-With version file integration
+### With version file integration
 
 * `bump:build` - increment the 4th version number (1.2.3.4 -> 1.2.3.5)
 * `bump:patch` - increment the 3rd version number (1.2.3.4 -> 1.2.4.0)
