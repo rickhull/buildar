@@ -85,9 +85,9 @@ class Buildar < Rake::TaskLib
     #
 
     desc "config check"
-    task :buildar do
+    task buildar: :valid_gemspec do
       spacer = " " * 14
-      gemspec = self.gemspec || raise("no valid gemspec")
+      gemspec = self.gemspec
       puts
       puts "     Project: #{gemspec.name} #{gemspec.version}"
       puts "Gemspec file: #{@gemspec_file}" if @gemspec_file
@@ -128,7 +128,7 @@ EOF
 
   def define_tasks
     desc "invoke :test and :bump_build conditionally"
-    task :pre_build => @pkg_dir do
+    task pre_build: @pkg_dir do
       Rake::Task[:test].invoke if Rake::Task.task_defined? :test
       Rake::Task['bump:build'].invoke if @version_file
     end
@@ -137,7 +137,7 @@ EOF
     # as a dependency, changing the target file
     #
     desc "build a .gem in #{@pkg_dir}/ using `gem build`"
-    task :build => :pre_build do
+    task build: :pre_build do
       if @gemspec_file
         sh "gem build #{@gemspec_file}"
         mv File.basename(self.gem_file), self.gem_file
@@ -150,7 +150,7 @@ EOF
     # operates with a hard or soft gemspec
     #
     desc "build a .gem in #{@pkg_dir}/ using Gem::PackageTask"
-    task :gem_package => :pre_build do
+    task gem_package: :pre_build do
       # definine the task at runtime, rather than requiretime
       # so that the gemspec will reflect any version bumping since requiretime
       require 'rubygems/package_task'
@@ -164,26 +164,34 @@ EOF
     end
 
     desc "publish the current version to rubygems.org"
-    task :publish => :built do
+    task publish: :built do
       sh "gem push #{self.gem_file}"
     end
 
     desc "build, publish" << (@use_git ? ", tag " : '')
-    task :release => [:build, :publish] do
+    task release: [:build, :publish] do
       Rake::Task[:tag].invoke if @use_git
     end
 
     desc "install the current version"
-    task :install => :built do
+    task install: :built do
       sh "gem install #{self.gem_file}"
     end
 
     desc "build a new version and install"
-    task :install_new => [:build, :install]
+    task install_new: [:build, :install]
 
     desc "display current version"
-    task :version do
+    task version: :valid_gemspec do
       puts self.gemspec.version
+    end
+
+    task :valid_gemspec do
+      unless self.gemspec
+        msg = "gemspec required"
+        msg += "; checked #{self.gemspec_file}" if self.gemspec_file
+        raise msg
+      end
     end
 
     #
@@ -201,7 +209,7 @@ EOF
 
     if @use_git
       desc "annotated git tag with version and message"
-      task :tag => :message do
+      task tag: :message do
         Rake::Task[:test].invoke if Rake::Task.task_defined? :test
         tagname = "v#{self.gemspec.version}"
         message = ENV['message'] || "auto-tagged #{tagname} by Buildar"
