@@ -4,8 +4,7 @@ require 'rake/tasklib'
 
 class Buildar < Rake::TaskLib
   def self.version
-    file = File.expand_path('../../VERSION', __FILE__)
-    File.read(file).chomp
+    File.read(File.join(__dir__, '..', 'VERSION')).chomp
   end
 
   # e.g. bump(:minor, '1.2.3') #=> '1.3.0'
