@@ -14,13 +14,15 @@ With a set of options to integrate with your current project.
 Rake tasks
 ----------
 Core
-*     `release` - `build` `publish` `tag`
-*       `build` - `pre_build` gem build a pkg/.gem
+
+*     `release` - build, publish, tag
+*       `build` - prebuild, then `gem build` a pkg/.gem
 * `gem_package` - `pre_build` Gem::PackageTask builds a pkg/.gem
 *     `publish` - `built` gem push
 *     `buildar` - config check
 
 Aux
+
 *   `pre_build` - invoke `test` and `bump:build` conditionally
 *       `built` - `build` conditionally
 *     `install` - `built` gem install .gem
@@ -28,10 +30,12 @@ Aux
 *     `version` - show the current project version
 
 With git integration
+
 *     `tag` - `message` git tag current version, push to origin
 * `message` - capture a message from ENV['message'] or prompt STDIN
 
 With version file integration
+
 * `bump:build` - increment the 4th version number (1.2.3.4 -> 1.2.3.5)
 * `bump:patch` - increment the 3rd version number (1.2.3.4 -> 1.2.4.0)
 * `bump:minor` - increment the 2nd version number (1.2.3.4 -> 1.3.0.0)
