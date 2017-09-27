@@ -46,14 +46,14 @@ With a set of options to integrate with your current project.
 
 [Just show me the tasks](https://github.com/rickhull/buildar/blob/master/lib/buildar.rb#L73)
 
-Install
--------
+## Install
+
 ```shell
 $ gem install buildar     # sudo as necessary
 ```
 
-Usage
------
+## Usage
+
 Edit your Rakefile.  Add to the top:
 
 ```ruby
@@ -64,10 +64,15 @@ Buildar.new do |b|
 end
 ```
 
-That is basically the minimal Rakefile needed for Buildar to operate, assuming you have a valid gemspec file named `example.gemspec`.
+That is basically the minimal Rakefile needed for Buildar to operate, assuming
+you have a valid gemspec file named `example.gemspec`.
+
+
+Let's try a Buildar task, **`release`**:
 
 ```
 $ rake release
+
 gem build example.gemspec
 WARNING:  no email specified
 Successfully built RubyGem
@@ -80,8 +85,8 @@ Pushing gem to https://rubygems.org...
 Successfully registered gem: example (1.2.3)
 ```
 
-Without a gemspec file
-----------------------
+### Without a gemspec file
+
 ```ruby
 Buildar.new do |b|
   b.gemspec.name = 'example'
@@ -96,24 +101,30 @@ end
 
 From [examples/no_gemspec_file.rb](https://github.com/rickhull/buildar/blob/master/examples/no_gemspec_file.rb)
 
-Dogfood
--------
+### Dogfood
+
 Here is Buildar's [Rakefile](https://github.com/rickhull/buildar/blob/master/Rakefile):
 
 ```ruby
-require 'buildar'
+begin
+  require 'buildar'
 
-Buildar.new do |b|
-  b.gemspec_file = 'buildar.gemspec'
-  b.version_file = 'VERSION'
-  b.use_git      = true
+  Buildar.new do |b|
+    b.gemspec_file = 'buildar.gemspec'
+    b.version_file = 'VERSION'
+    b.use_git      = true
+  end
+
+rescue LoadError => e
+  warn "buildar failed to load: #{e}"
 end
 ```
 
-With `b.version_file` and `b.use_git`
+Let's try **`release:patch`** with `b.version_file` and `b.use_git`
 
 ```
 $ rake release:patch message="added version task; demonstrating Usage"
+
 bumping 2.0.0.9 to 2.0.1.0
 git commit VERSION -m "Buildar version:bump_patch to 2.0.1.0"
 [master 5df1ff8] Buildar version:bump_patch to 2.0.1.0
@@ -138,16 +149,19 @@ To https://github.com/rickhull/buildar.git
 * [new tag]         v2.0.1.1 -> v2.0.1.1
 ```
 
-Use a VERSION file
-------------------
+### Use a VERSION file
+
 * Buildar can manage your version numbers with `b.version_file`
-* The version only matters in the context of a release.  For internal development, git SHAs vastly outclass version numbers.
-* "The right version number" for the next release is a function of the current release version and the magnitude (or breakiness) of the change
+* The version only matters in the context of a release.  For internal
+  development, git SHAs vastly outclass version numbers.
+* "The right version number" for the next release is a function of the current
+  release version and the magnitude (or breakiness) of the change
 * http://guides.rubygems.org/patterns/#semantic-versioning
 * http://semver.org/
 * Automate everything
 
 The [VERSION](https://github.com/rickhull/buildar/blob/master/VERSION) file at your project root should look something like
+
 ```
 1.2.3.4
 ```
