@@ -120,7 +120,7 @@ rescue LoadError => e
 end
 ```
 
-Let's try **`release:patch`** with `b.version_file` and `b.use_git`
+Let's try **`release:patch`**, this time with `b.version_file` and `b.use_git`:
 
 ```
 $ rake release:patch message="added version task; demonstrating Usage"
@@ -166,14 +166,22 @@ The [VERSION](https://github.com/rickhull/buildar/blob/master/VERSION) file at y
 1.2.3.4
 ```
 
-Buildar will be able to `bump:major` `bump:minor` `bump:patch` and `bump:build`.  This helps with a repeatable, identifiable builds: `build` invokes `bump:build` etc.
+Buildar will be able to **`bump:major`**, **`bump:minor`**, **`bump:patch`**,
+and **`bump:build`**.  This helps with a repeatable, identifiable builds:
+**`build`** invokes **`bump:build`** etc.
 
-Every build bumps the build number.  Since the build operates off of your potentially dirty working copy, and not some commit SHA, there is no guarantee that things haven't changed between builds, even if "nothing is supposed to have changed".  This guarantees that you can't have 2 builds floating around with the same version number but different contents.
+Every build bumps the build number.  Since the build operates off of your
+potentially dirty working copy, and not some commit SHA, there is no guarantee
+that things haven't changed between builds, even if "nothing is supposed to
+have changed".  This guarantees that you can't have 2 builds floating around
+with the same version number but different contents.
 
-Typically you'll want to let Buildar manage the build number, and you manage the major, minor, and patch numbers with:
-* `release:major` - `bump:major`
-* `release:minor` - `bump:minor`
-* `release:patch` - `bump:patch`
+Typically you'll want to let Buildar manage the build number, and you manage
+the major, minor, and patch numbers with:
+
+* **`release:major`** - *`bump:major`*
+* **`release:minor`** - *`bump:minor`*
+* **`release:patch`** - *`bump:patch`*
 
 To make your app or lib aware of its version via this file, simply:
 
@@ -183,15 +191,16 @@ To make your app or lib aware of its version via this file, simply:
 module Foo
   def self.version
     file = File.expand_path('../../VERSION', __FILE__)
-	File.read(file).chomp
+    File.read(file).chomp
   end
 end
 ```
 
-`b.version_file` defaults to nil, so if you don't set it, you'll have to keep your gemspec's version attribute updated.
+`b.version_file` defaults to nil, so if you don't set it, you'll have to keep
+your gemspec's version attribute updated.
 
-Gemspec file tricks
--------------------
+### Gemspec file tricks
+
 With
 ```ruby
 Buildar.new do |b|
@@ -199,18 +208,18 @@ Buildar.new do |b|
   b.version_file = 'VERSION'
 ```
 
-You'll need to keep your gemspec file in synch with the version_file.  Here's [how Buildar does it](https://github.com/rickhull/buildar/blob/master/buildar.gemspec):
+You'll need to keep your gemspec file in synch with `b.version_file`.
+Here's [how Buildar does it](https://github.com/rickhull/buildar/blob/master/buildar.gemspec):
+
 ```ruby
 # Gem::Specification.new do |s|
   # ...
-  # dynamic setup
-  this_dir = File.expand_path('..', __FILE__)
-  version_file = File.join(this_dir, 'VERSION')
-  manifest_file = File.join(this_dir, 'MANIFEST.txt')
-
-  # dynamic assignments
-  s.version  = File.read(version_file).chomp
-  s.files = File.readlines(manifest_file).map { |f| f.chomp }
+  s.version  = File.read(File.join(__dir__, 'VERSION')).chomp
+  s.files =
+    File.readlines(File.join(__dir__, 'MANIFEST.txt')).map { |f| f.chomp }
 ```
 
-I also like to maintain a [MANIFEST.txt](https://github.com/rickhull/buildar/blob/master/MANIFEST.txt) -- the canonical list of files belonging to the project -- outside of the gemspec.
+Buildar maintains a
+[MANIFEST.txt](https://github.com/rickhull/buildar/blob/master/MANIFEST.txt)
+-- the canonical list of files belonging to the project --
+outside of the gemspec.
