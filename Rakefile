@@ -1,3 +1,11 @@
+require 'rake/testtask'
+
+Rake::TestTask.new do |t|
+  t.test_files = FileList['test/**/*.rb']
+end
+
+task default: :test
+
 begin
   require 'buildar'
 
@@ -9,16 +17,4 @@ begin
 
 rescue LoadError => e
   warn "buildar failed to load: #{e}"
-end
-
-begin
-  require 'rake/testtask'
-
-  Rake::TestTask.new do |t|
-    t.test_files = FileList['test/**/*.rb']
-  end
-
-  task default: :test
-rescue Exception => e
-  warn "rake/testtask error: #{e}"
 end
