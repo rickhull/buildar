@@ -208,3 +208,5 @@ Buildar.new do |b|
 
 You'll need to keep your gemspec file in synch with `b.version_file`.
 Here's [how Buildar does it](https://github.com/rickhull/buildar/blob/master/buildar.gemspec):
+
+https://github.com/rickhull/buildar/blob/04ee729169bc4f77fc6f68778e565c7fcf914e7d/buildar.gemspec#L12-L15
