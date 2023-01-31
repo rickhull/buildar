@@ -159,7 +159,7 @@ EOF
 
     # desc "used internally; make sure we have .gem for the current version"
     task :built do
-      Rake::Task[:build].invoke unless File.exists? self.gem_file
+      Rake::Task[:build].invoke unless File.exist? self.gem_file
     end
 
     desc "publish the current version to rubygems.org"
