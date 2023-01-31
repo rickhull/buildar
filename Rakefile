@@ -16,5 +16,5 @@ begin
   end
 
 rescue LoadError => e
-  warn "buildar failed to load: #{e}"
+  warn "buildar tasks unavailable"
 end
