@@ -9,8 +9,8 @@ Gem::Specification.new do |s|
 
   s.required_ruby_version = ">= 2"
 
-  # dynamic assignments
   s.version  = File.read(File.join(__dir__, 'VERSION')).chomp
-  s.files =
-    File.readlines(File.join(__dir__, 'MANIFEST.txt')).map { |f| f.chomp }
+  s.files  = %w[buildar.gemspec VERSION README.md Rakefile]
+  s.files += Dir['lib/**/*.rb']
+  s.files += Dir['test/**/*.rb']
 end

@@ -1,6 +1,4 @@
 [![Gem Version](https://badge.fury.io/rb/buildar.svg)](http://badge.fury.io/rb/buildar)
-[![Dependency Status](https://gemnasium.com/rickhull/buildar.svg)](https://gemnasium.com/rickhull/buildar)
-[![Security Status](https://hakiri.io/github/rickhull/buildar/master.svg)](https://hakiri.io/github/rickhull/buildar/master/shield)
 
 # Buildar
 
@@ -210,16 +208,3 @@ Buildar.new do |b|
 
 You'll need to keep your gemspec file in synch with `b.version_file`.
 Here's [how Buildar does it](https://github.com/rickhull/buildar/blob/master/buildar.gemspec):
-
-```ruby
-# Gem::Specification.new do |s|
-  # ...
-  s.version  = File.read(File.join(__dir__, 'VERSION')).chomp
-  s.files =
-    File.readlines(File.join(__dir__, 'MANIFEST.txt')).map { |f| f.chomp }
-```
-
-Buildar maintains a
-[MANIFEST.txt](https://github.com/rickhull/buildar/blob/master/MANIFEST.txt)
--- the canonical list of files belonging to the project --
-outside of the gemspec.

@@ -1,6 +1,0 @@
-buildar.gemspec
-MANIFEST.txt
-VERSION
-README.md
-Rakefile
-lib/buildar.rb
