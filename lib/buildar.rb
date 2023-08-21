@@ -167,7 +167,7 @@ EOF
       sh "gem push #{self.gem_file}"
     end
 
-    desc "build, publish" << (@use_git ? ", tag " : '')
+    desc "build, publish" + (@use_git ? ", tag " : '')
     task release: [:build, :publish] do
       Rake::Task[:tag].invoke if @use_git
     end
